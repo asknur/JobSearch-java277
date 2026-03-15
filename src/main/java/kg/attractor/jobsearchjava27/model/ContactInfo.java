@@ -1,4 +1,4 @@
-package model;
+package kg.attractor.jobsearchjava27.model;
 
 public class ContactInfo {
     private int id;

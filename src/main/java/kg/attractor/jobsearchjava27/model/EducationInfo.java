@@ -1,4 +1,4 @@
-package model;
+package kg.attractor.jobsearchjava27.model;
 
 import java.time.LocalDate;
 

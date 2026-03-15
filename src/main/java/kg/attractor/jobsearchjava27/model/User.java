@@ -1,4 +1,4 @@
-package model;
+package kg.attractor.jobsearchjava27.model;
 
 public class User {
     private int id;
