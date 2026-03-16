@@ -14,6 +14,7 @@ public class UserService {
     }
 
     public User save(User user) {
+        users.add(user);
         return user;
     }
 
