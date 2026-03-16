@@ -1,7 +1,12 @@
-package model;
+package kg.attractor.jobsearchjava27.model;
+
+import lombok.Builder;
+import lombok.Data;
 
 import java.sql.Timestamp;
 
+@Data
+@Builder
 public class Resume {
     private int id;
     private Timestamp updateTime;
