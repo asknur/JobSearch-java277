@@ -1,14 +1,13 @@
-package kg.attractor.jobsearchjava27.model;
+package kg.attractor.jobsearchjava27.dto;
 
-import lombok.Builder;
+import kg.attractor.jobsearchjava27.model.Category;
+import kg.attractor.jobsearchjava27.model.User;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-@Builder
-public class Resume {
-    private int id;
+public class ResumeDto {
     private Timestamp updateTime;
     private Timestamp createDate;
     private boolean isActive;
@@ -16,5 +15,4 @@ public class Resume {
     private Category categoryId;
     private String name;
     private User applicantId;
-
 }

@@ -1,7 +1,11 @@
 package kg.attractor.jobsearchjava27.model;
 
+import lombok.Builder;
+import lombok.Data;
 import java.time.LocalDate;
 
+@Data
+@Builder
 public class EducationInfo {
     private int id;
     private String degree;
