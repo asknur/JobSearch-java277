@@ -15,21 +15,21 @@ public class ResumeService {
     }
 
     public Resume save(Resume resume) {
+        resumes.add(resume);
         return resume;
-    }
-
-    public List<Resume> getAllResume() {
-        return resumes;
-    }
-
-    public List<Resume> getResumeByCategory(String category) {
-        return resumes.stream()
-                .filter(resume -> resume.getCategoryId().equals(category))
-                .toList();
     }
 
     public void deleteById(int id) {
         resumes.removeIf(resume -> resume.getId() == id);
     }
 
+    public List<Resume> getAllResume() {
+        return resumes;
+    }
+
+    public List<Resume> getResumeByCategory(int category) {
+        return resumes.stream()
+                .filter(resume -> resume.getCategoryId().equals(category))
+                .toList();
+    }
 }
