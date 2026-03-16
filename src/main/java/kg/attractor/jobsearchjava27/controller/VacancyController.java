@@ -43,7 +43,7 @@ public class VacancyController {
     }
 
     @PostMapping("/{id}/apply")
-    public ResponseEntity<String> applyVacancy(@PathVariable int id) {
+    public ResponseEntity<String> respondVacancy(@PathVariable int id) {
         return new ResponseEntity<>("Отклик на вакансию " + id + " сохранён", HttpStatus.OK);
     }
 
@@ -51,16 +51,6 @@ public class VacancyController {
     public ResponseEntity<String> getApplicants(@PathVariable int id) {
         return new ResponseEntity<>("Список соискателей на вакансию " + id, HttpStatus.OK);
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }
