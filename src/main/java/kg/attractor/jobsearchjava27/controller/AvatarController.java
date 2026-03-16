@@ -1,4 +1,5 @@
 package kg.attractor.jobsearchjava27.controller;
 
-public class EmployerController {
+public class AvatarController {
+
 }
