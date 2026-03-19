@@ -1,18 +1,16 @@
-package kg.attractor.jobsearchjava27.service;
+package kg.attractor.jobsearchjava27.service.impl;
 
 import kg.attractor.jobsearchjava27.model.Resume;
-import kg.attractor.jobsearchjava27.model.Vacancy;
+import kg.attractor.jobsearchjava27.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ResumeService {
+@RequiredArgsConstructor
+public class ResumeServiceImpl {
     private final List<Resume> resumes;
-
-    public ResumeService(List<Resume> resumes) {
-        this.resumes = resumes;
-    }
 
     public Resume save(Resume resume) {
         resumes.add(resume);

@@ -1,8 +1,7 @@
 package kg.attractor.jobsearchjava27.controller;
 
 import kg.attractor.jobsearchjava27.model.Resume;
-import kg.attractor.jobsearchjava27.model.Vacancy;
-import kg.attractor.jobsearchjava27.service.ResumeService;
+import kg.attractor.jobsearchjava27.service.impl.ResumeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ import java.util.List;
 @RequestMapping("/resumes")
 @RequiredArgsConstructor
 public class ResumeController {
-    private final ResumeService resumeService;
+    private final ResumeServiceImpl resumeService;
 
     @PostMapping
     public ResponseEntity<Resume> createResume(@RequestBody Resume resume) {
