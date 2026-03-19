@@ -1,5 +1,7 @@
 package kg.attractor.jobsearchjava27.service.impl;
 
+import kg.attractor.jobsearchjava27.dao.ResumeDao;
+import kg.attractor.jobsearchjava27.dao.UserDao;
 import kg.attractor.jobsearchjava27.model.Resume;
 import kg.attractor.jobsearchjava27.model.User;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResumeServiceImpl {
     private final List<Resume> resumes;
+    private final ResumeDao resumeDao;
 
     public Resume save(Resume resume) {
         resumes.add(resume);
@@ -26,8 +29,15 @@ public class ResumeServiceImpl {
     }
 
     public List<Resume> getResumeByCategory(int category) {
-        return resumes.stream()
-                .filter(resume -> resume.getCategoryId().equals(category))
-                .toList();
+        return resumes.stream().filter(resume -> resume.getCategoryId().equals(category)).toList();
     }
+
+    public List<Resume> getResumeByCategoryId(int category) {
+        return resumeDao.getResumeByCategoryId(category);
+    }
+
+    public List<Resume> getResumeByApplicantId(int applicantId) {
+        return resumeDao.getResumeByApplicantId(applicantId);
+    }
+
 }
