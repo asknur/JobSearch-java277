@@ -39,5 +39,17 @@ public class UserServiceImpl {
         return userDao.getByName(name);
     }
 
+    public List<User> getUserByPhone(String phone) {
+        return userDao.getByPhone(phone);
+    }
+
+    public List<User> getUserByEmail(String email) {
+        return userDao.getByEmail(email);
+    }
+
+    public boolean getUserByExistEmail(String email) {
+        return userDao.existsByEmail(email);
+    }
+
 
 }
