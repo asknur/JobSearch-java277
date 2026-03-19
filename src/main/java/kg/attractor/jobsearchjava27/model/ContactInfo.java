@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ContactInfo {
-    private int id;
+    private Integer id;
     private String value;
     private Resume resumeId;
     private ContactType typeId;

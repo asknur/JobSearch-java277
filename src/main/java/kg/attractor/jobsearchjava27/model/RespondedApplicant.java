@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class RespondedApplicant {
-    private int id;
+    private Integer id;
     private boolean confirmation;
     private Vacancy vacancyId;
     private Resume resumeId;

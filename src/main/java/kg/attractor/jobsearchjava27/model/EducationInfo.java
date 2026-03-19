@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class EducationInfo {
-    private int id;
+    private Integer id;
     private String degree;
     private LocalDate startDate;
     private LocalDate endDate;
