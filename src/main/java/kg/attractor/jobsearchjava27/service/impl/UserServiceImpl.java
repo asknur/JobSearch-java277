@@ -25,7 +25,6 @@ public class UserServiceImpl {
         List<User> users = userDao.getAllUsers();
         List<UserDto> result = new ArrayList<>();
         users.forEach(e -> UserDto.builder()
-                .id(e.getId())
                 .name(e.getName())
                 .password(e.getPassword())
                 .build());
