@@ -25,7 +25,6 @@ public class UserServiceImpl {
         List<User> users = userDao.getAllUsers();
         List<UserDto> result = new ArrayList<>();
         users.forEach(e -> UserDto.builder()
-                .id(e.getId())
                 .name(e.getName())
                 .password(e.getPassword())
                 .build());
@@ -38,6 +37,18 @@ public class UserServiceImpl {
 
     public List<User> getUserByName(String name) {
         return userDao.getByName(name);
+    }
+
+    public List<User> getUserByPhone(String phone) {
+        return userDao.getByPhone(phone);
+    }
+
+    public List<User> getUserByEmail(String email) {
+        return userDao.getByEmail(email);
+    }
+
+    public boolean getUserByExistEmail(String email) {
+        return userDao.existsByEmail(email);
     }
 
 
