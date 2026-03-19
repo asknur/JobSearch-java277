@@ -7,18 +7,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.security.Timestamp;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResumeDto {
+public class VacancyDto {
     private Timestamp updateTime;
-    private Timestamp createDate;
+    private Timestamp createdTime;
+    private User authorId;
     private boolean isActive;
+    private Integer expTo;
+    private Integer expFrom;
     private float salary;
     private Category categoryId;
+    private String description;
     private String name;
-    private User applicantId;
 }
