@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 @Builder
 public class WorkExperienceInfo {
-    private int id;
+    private Integer id;
     private String responsibilities;
     private String position;
     private String companyName;
-    private int years;
+    private Integer years;
     private Resume resumeId;
 
 }

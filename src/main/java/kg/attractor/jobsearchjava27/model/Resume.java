@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 @Data
 @Builder
 public class Resume {
-    private int id;
+    private Integer id;
     private Timestamp updateTime;
     private Timestamp createDate;
     private boolean isActive;

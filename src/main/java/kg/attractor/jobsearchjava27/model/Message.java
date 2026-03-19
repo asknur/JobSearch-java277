@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 @Data
 @Builder
 public class Message {
-    private int id;
+    private Integer id;
     private Timestamp timestamp;
     private String content;
     private RespondedApplicant respondedApplicantId;
