@@ -1,7 +1,7 @@
 package kg.attractor.jobsearchjava27.controller;
 
 import kg.attractor.jobsearchjava27.model.User;
-import kg.attractor.jobsearchjava27.service.UserService;
+import kg.attractor.jobsearchjava27.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @GetMapping("/register")
     public ResponseEntity<User> getRegister(@RequestBody User user) {
