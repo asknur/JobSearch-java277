@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ImageDto {
-    private MultipartFile file;
-    private long UserId;
-
+public class ContactTypeDto {
+    private String type;
+    private Integer parentId;
 }
