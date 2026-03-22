@@ -1,0 +1,326 @@
+﻿databaseChangeLog:
+  - changeSet:
+      id: 001
+      author: Askar
+      changes:
+        - createTable:
+            tableName: usr
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+              - column:
+                  name: email
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: varchar(100)
+              - column:
+                  name: avatar
+                  type: varchar(100)
+              - column:
+                  name: account_type
+                  type: varchar(100)
+  - changeSet:
+      id: 002
+      author: Askar
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: parent_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_parent_id
+                    references: categories(id)
+  - changeSet:
+      id: 003
+      author: Askar
+      changes:
+        - createTable:
+            tableName: contact_type
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(100)
+  - changeSet:
+      id: 004
+      author: Askar
+      changes:
+        - createTable:
+            tableName: resumes
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: applicant_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_resume_user
+                    references: usr(id)
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: category_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_resume_category
+                    references: categories(id)
+              - column:
+                  name: salary
+                  type: real
+              - column:
+                  name: is_active
+                  type: boolean
+              - column:
+                  name: created_date
+                  type: timestamp
+              - column:
+                  name: update_time
+                  type: timestamp
+  - changeSet:
+      id: 005
+      author: Askar
+      changes:
+        - createTable:
+            tableName: vacancies
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: description
+                  type: varchar(100)
+              - column:
+                  name: category_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_vacancy_category
+                    references: categories(id)
+              - column:
+                  name: salary
+                  type: real
+              - column:
+                  name: exp_from
+                  type: int
+              - column:
+                  name: exp_to
+                  type: int
+              - column:
+                  name: is_active
+                  type: boolean
+              - column:
+                  name: author_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_vacancy_user
+                    references: usr(id)
+              - column:
+                  name: created_date
+                  type: timestamp
+              - column:
+                  name: update_time
+                  type: timestamp
+  - changeSet:
+      id: 006
+      author: Askar
+      changes:
+        - createTable:
+            tableName: contacts_info
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: type_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_contact_type
+                    references: contact_type(id)
+              - column:
+                  name: resume_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_contact_resume
+                    references: resumes(id)
+              - column:
+                  name: contact_value
+                  type: varchar(100)
+  - changeSet:
+      id: 007
+      author: Askar
+      changes:
+        - createTable:
+            tableName: education_info
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: resume_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_education_resume
+                    references: resumes(id)
+              - column:
+                  name: institution
+                  type: varchar(100)
+              - column:
+                  name: program
+                  type: varchar(100)
+              - column:
+                  name: start_date
+                  type: date
+              - column:
+                  name: end_date
+                  type: date
+              - column:
+                  name: degree
+                  type: varchar(100)
+
+  - changeSet:
+      id: 008
+      author: Askar
+      changes:
+        - createTable:
+            tableName: work_experience_info
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: resume_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_work_resume
+                    references: resumes(id)
+              - column:
+                  name: years
+                  type: int
+              - column:
+                  name: company_name
+                  type: varchar(100)
+              - column:
+                  name: position
+                  type: varchar(100)
+              - column:
+                  name: responsibilities
+                  type: varchar(100)
+  - changeSet:
+      id: 009
+      author: Askar
+      changes:
+        - createTable:
+            tableName: responded_applicants
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: resume_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_response_resume
+                    references: resumes(id)
+              - column:
+                  name: vacancy_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_response_vacancy
+                    references: vacancies(id)
+              - column:
+                  name: confirmation
+                  type: boolean
+  - changeSet:
+      id: 010
+      author: Askar
+      changes:
+        - createTable:
+            tableName: messages
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: responded_applicant_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_message_response
+                    references: responded_applicants(id)
+              - column:
+                  name: content
+                  type: varchar(100)
+              - column:
+                  name: timestamp
+                  type: timestamp

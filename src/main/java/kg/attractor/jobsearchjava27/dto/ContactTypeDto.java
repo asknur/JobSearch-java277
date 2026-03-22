@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ContactTypeDto {
     private String type;
-    private Integer parentId;
+    private Long parentId;
 }

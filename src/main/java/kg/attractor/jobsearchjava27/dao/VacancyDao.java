@@ -5,7 +5,10 @@ import kg.attractor.jobsearchjava27.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,6 +18,11 @@ import java.util.List;
 public class VacancyDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    public List<Vacancy> getVacancyById(int id) {
+        String sql = "SELECT * FROM vacancies WHERE id = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), id);
+    }
 
     public List<Vacancy> getRespondedVacancy(int userId) {
         String sql = """
@@ -45,5 +53,42 @@ public class VacancyDao {
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
     }
+
+    public void updateVacancy(Vacancy vacancy) {
+        String sql = "set name = ?, description = ?, category_id = ?, salary = ?, exp_from = ?, exp_to = ?, created_date = ?, where id = ? ";
+        jdbcTemplate.update(sql,
+                vacancy.getName(),
+                vacancy.getDescription(),
+                vacancy.getCategoryId(),
+                vacancy.getSalary(),
+                vacancy.getExpFrom(),
+                vacancy.getExpTo(),
+                vacancy.getCreatedTime(),
+                vacancy.getId());
+    }
+
+    public Vacancy createVacancy(Vacancy vacancy) {
+        String sql = "insert into vacancies(name, description,  category_id, salary, exp_from, exp_to, author_id, created_date)\n)" +
+                " values (:name, :description, :category_id, :salary, :exp_from, :exp_to, :author_id, :created_date)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("name", vacancy.getName());
+        sqlParameterSource.addValue("description", vacancy.getDescription());
+        sqlParameterSource.addValue("category_id", vacancy.getCategoryId());
+        sqlParameterSource.addValue("salary", vacancy.getSalary());
+        sqlParameterSource.addValue("exp_from", vacancy.getExpFrom());
+        sqlParameterSource.addValue("exp_to", vacancy.getExpTo());
+        sqlParameterSource.addValue("author_id", vacancy.getAuthorId());
+        sqlParameterSource.addValue("created_date", vacancy.getCreatedTime());
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
+        vacancy.setId(keyHolder.getKey().intValue());
+        return vacancy;
+    }
+
+    public void deleteVacancy(Vacancy vacancy) {
+        String sql = "delete from vacancies where id = ?";
+        jdbcTemplate.update(sql, vacancy.getId());
+    }
+
 
 }
