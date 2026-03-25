@@ -21,8 +21,6 @@
               - column:
                   name: surname
                   type: varchar(100)
-                  constraints:
-                    nullable: false
               - column:
                   name: age
                   type: int
