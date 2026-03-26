@@ -1,9 +1,6 @@
 package kg.attractor.jobsearchjava27.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,18 +11,34 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserDto {
+    @NotBlank
     private String accountType;
+
+    @NotBlank
     private String avatar;
+
+    @NotBlank
+    @Size(min = 5, message = "Should be phone number")
     private String phoneNumber;
+
+    @NotBlank
+    @Size(min = 1, message = "Should be text")
     private String text;
 
     @NotBlank
     @Email
     private String email;
+
+    @NotNull
+    @Min(1)
     private Integer age;
 
     @NotBlank
+    @Size(min = 4, max = 50, message = "Should be name")
     private String name;
+
+    @NotBlank
+    @Size(min = 4, max = 50, message = "Should be surname")
     private String surname;
 
     @NotBlank
