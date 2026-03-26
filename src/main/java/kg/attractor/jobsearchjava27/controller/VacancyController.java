@@ -39,7 +39,7 @@ public class VacancyController {
 
     @GetMapping("/category/{id}")
     public ResponseEntity<List<Vacancy>> getVacanciesByCategory(@PathVariable int id) {
-        return new ResponseEntity<>(vacancyService.getVacanciesByCategory(id), HttpStatus.OK);
+        return new ResponseEntity<>(vacancyService.getVacanciesByCategoryId(id), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/apply")
