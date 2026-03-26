@@ -1,5 +1,7 @@
 package kg.attractor.jobsearchjava27.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import kg.attractor.jobsearchjava27.model.Resume;
 import kg.attractor.jobsearchjava27.model.Vacancy;
 import lombok.AllArgsConstructor;
@@ -11,8 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RespondedApplicant {
+public class RespondedApplicantDto {
+    @NotNull
     private boolean confirmation;
+
+    @NotNull
+    @Min(1)
     private Vacancy vacancyId;
+
+    @NotNull
+    @Min(1)
     private Resume resumeId;
 }

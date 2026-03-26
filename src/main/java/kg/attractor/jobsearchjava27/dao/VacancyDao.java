@@ -85,9 +85,10 @@ public class VacancyDao {
         return vacancy;
     }
 
-    public void deleteVacancy(Vacancy vacancy) {
+    public void deleteVacancy(int id) {
         String sql = "delete from vacancies where id = ?";
-        jdbcTemplate.update(sql, vacancy.getId());
+        jdbcTemplate.update(sql, id);
+
     }
 
 
