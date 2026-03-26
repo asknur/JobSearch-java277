@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RespondedApplicant {
+public class RespondedApplicantDto {
     @NotNull
     private boolean confirmation;
 
