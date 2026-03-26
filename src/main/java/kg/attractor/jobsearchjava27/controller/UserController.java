@@ -17,11 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserServiceImpl userService;
 
-    @PostMapping
-    public void register(@Valid UserDto userDto) throws UserDataCreateException {
-        userService.create(userDto);
-    }
-
     @GetMapping("/applicant/{id}")
     public ResponseEntity<UserDto> getApplicant(@PathVariable int id) throws UserNotFoundException {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
