@@ -1,8 +1,10 @@
 package kg.attractor.jobsearchjava27.dao;
 
 import kg.attractor.jobsearchjava27.dao.mappers.UserMapper;
+import kg.attractor.jobsearchjava27.dto.UserDto;
 import kg.attractor.jobsearchjava27.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,13 +22,13 @@ public class UserDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public Optional<User> findById(int id) {
-        String sql = "select * from usr where id = ?";
-
-        return Optional.ofNullable(
-                DataAccessUtils.singleResult(
-                        jdbcTemplate.query(sql, new UserMapper(), id)
-                )
-        );
+        String sql = "SELECT * FROM usr WHERE id = ?";
+        try {
+            User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), id);
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
     }
 
     public List<User> getAllUsers() {
@@ -34,23 +36,49 @@ public class UserDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public List<User> getByName(String name) {
-        String sql = "SELECT * FROM usr WHERE name LIKE :name";
-        return namedParameterJdbcTemplate.query(sql, new MapSqlParameterSource().addValue("name", "%" + name + "%"),
-                new UserMapper()
-        );
+    public Optional<User> getByName(String name) {
+        String sql = "SELECT * FROM usr WHERE name = :name";
+        MapSqlParameterSource params = new MapSqlParameterSource().addValue("name", name);
+        try {
+            User user = namedParameterJdbcTemplate.queryForObject(
+                    sql,
+                    params,
+                    new BeanPropertyRowMapper<>(User.class)
+            );
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
-    public List<User> getByPhone(String phone) {
-        String sql = "SELECT * FROM usr WHERE phone_number LIKE :phone_number";
-        return namedParameterJdbcTemplate.query(sql, new MapSqlParameterSource().addValue("phone_number", "%" + phone + "%"),
-                new UserMapper());
+    public Optional<User> getByPhone(String phone) {
+        String sql = "SELECT * FROM usr WHERE phone_number = :phone_number";
+        MapSqlParameterSource params = new MapSqlParameterSource().addValue("phone_number", phone);
+        try {
+            User user = namedParameterJdbcTemplate.queryForObject(
+                    sql,
+                    params,
+                    new BeanPropertyRowMapper<>(User.class)
+            );
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
-    public List<User> getByEmail(String email) {
-        String sql = "SELECT * FROM usr WHERE email LIKE :email";
-        return namedParameterJdbcTemplate.query(sql, new MapSqlParameterSource().addValue("email", "%" + email + "%"),
-                new UserMapper());
+    public Optional<User> getByEmail(String email) {
+        String sql = "SELECT * FROM usr WHERE email = :email";
+        MapSqlParameterSource params = new MapSqlParameterSource().addValue("email", email);
+        try {
+            User user = namedParameterJdbcTemplate.queryForObject(
+                    sql,
+                    params,
+                    new BeanPropertyRowMapper<>(User.class)
+            );
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public boolean existsByEmail(String email) {
