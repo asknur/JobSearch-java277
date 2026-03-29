@@ -1,20 +1,20 @@
 package kg.attractor.jobsearchjava27.service;
 
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
-import kg.attractor.jobsearchjava27.model.Resume;
+import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 
 import java.util.List;
 
 public interface ResumeService {
-    ResumeDto save(ResumeDto resume);
+    void create(ResumeDto res);
 
-    Resume update(Resume resume);
+    ResumeDto update(ResumeDto resume) throws ResumeNotFoundException;
 
     void deleteById(int id);
 
-    List<Resume> getAllResume();
+    List<ResumeDto> getAllResume();
 
-    List<Resume> getResumeByCategoryId(int category);
+    ResumeDto getResumeByCategoryId(int category) throws ResumeNotFoundException;
 
-    List<Resume> getResumeByApplicantId(int applicantId);
+    ResumeDto getResumeByApplicantId(int id) throws ResumeNotFoundException;
 }
