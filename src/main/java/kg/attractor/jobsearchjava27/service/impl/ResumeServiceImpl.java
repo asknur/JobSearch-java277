@@ -2,30 +2,44 @@ package kg.attractor.jobsearchjava27.service.impl;
 
 import kg.attractor.jobsearchjava27.dao.ResumeDao;
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
+import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 import kg.attractor.jobsearchjava27.model.Resume;
 import kg.attractor.jobsearchjava27.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
-    private final List<Resume> resumes;
-    private final List<ResumeDto> resumesDto;
     private final ResumeDao resumeDao;
 
     @Override
-    public ResumeDto save(ResumeDto resume) {
-        resumesDto.add(resume);
-        return resume;
+    public void create(ResumeDto res) {
+        Resume resume = Resume.builder()
+                .name(res.getName())
+                .categoryId(res.getCategoryId())
+                .applicantId(res.getApplicantId())
+                .salary(res.getSalary())
+                .createDate(res.getCreateDate())
+                .isActive(res.isActive())
+                .build();
+        resumeDao.createResume(resume);
     }
 
     @Override
-    public Resume update(Resume resume) {
-        resumes.add(resume);
-        return resume;
+    public ResumeDto update(ResumeDto res) throws ResumeNotFoundException {
+        Resume resume = resumeDao.getResumeById(Math.toIntExact(res.getId()))
+                .orElseThrow(ResumeNotFoundException::new);
+        resume.setName(res.getName());
+        resume.setCategoryId(res.getCategoryId());
+        resume.setApplicantId(res.getApplicantId());
+        resume.setSalary(res.getSalary());
+        resume.setUpdateTime(res.getUpdateTime());
+        resumeDao.updateResume(resume);
+        return res;
     }
 
     @Override
@@ -34,18 +48,54 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<Resume> getAllResume() {
-        return resumeDao.getAllResume();
+    public List<ResumeDto> getAllResume() {
+        List<Resume> resumes = resumeDao.getAllResume();
+        List<ResumeDto> result = new ArrayList<>();
+
+        resumes.forEach(e -> {
+            ResumeDto resumeDto = ResumeDto.builder()
+                    .applicantId(e.getApplicantId())
+                    .salary(e.getSalary())
+                    .name(e.getName())
+                    .updateTime(e.getUpdateTime())
+                    .createDate(e.getCreateDate())
+                    .categoryId(e.getCategoryId())
+                    .isActive(e.isActive())
+                    .build();
+            result.add(resumeDto);
+        });
+        return result;
     }
 
     @Override
-    public List<Resume> getResumeByCategoryId(int category) {
-        return resumeDao.getResumeByCategoryId(category);
+    public ResumeDto getResumeByCategoryId(int id) throws ResumeNotFoundException{
+        Resume resume = resumeDao.getResumeByCategoryId(id)
+                .orElseThrow(ResumeNotFoundException::new);
+        return ResumeDto.builder()
+                .applicantId(resume.getApplicantId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.isActive())
+                .createDate(resume.getCreateDate())
+                .updateTime(resume.getUpdateTime())
+                .build();
     }
 
     @Override
-    public List<Resume> getResumeByApplicantId(int applicantId) {
-        return resumeDao.getResumeByApplicantId(applicantId);
+    public ResumeDto getResumeByApplicantId(int id) throws ResumeNotFoundException{
+        Resume resume = resumeDao.getResumeByApplicantId(id)
+                .orElseThrow(ResumeNotFoundException::new);
+        return ResumeDto.builder()
+                .applicantId(resume.getApplicantId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.isActive())
+                .createDate(resume.getCreateDate())
+                .updateTime(resume.getUpdateTime())
+                .build();
+
     }
 
 }

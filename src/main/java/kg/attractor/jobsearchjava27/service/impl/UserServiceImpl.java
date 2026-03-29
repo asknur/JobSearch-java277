@@ -3,6 +3,7 @@ package kg.attractor.jobsearchjava27.service.impl;
 import jakarta.validation.Valid;
 import kg.attractor.jobsearchjava27.dao.UserDao;
 import kg.attractor.jobsearchjava27.dto.UserDto;
+import kg.attractor.jobsearchjava27.exception.NotFoundEntryException;
 import kg.attractor.jobsearchjava27.exception.UserDataCreateException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
@@ -51,22 +52,60 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .name(user.getName())
+                .accountType(user.getAccountType())
+                .phoneNumber(user.getPhoneNumber())
+                .text(user.getText())
+                .age(user.getAge())
+                .surname(user.getSurname())
                 .build();
     }
 
     @Override
-    public List<User> getUserByName(String name) {
-        return userDao.getByName(name);
+    public UserDto getUserByName(String name) throws UserNotFoundException {
+        User user = userDao.getByName(name)
+                .orElseThrow(UserNotFoundException::new);
+        return UserDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .name(user.getName())
+                .accountType(user.getAccountType())
+                .phoneNumber(user.getPhoneNumber())
+                .text(user.getText())
+                .age(user.getAge())
+                .surname(user.getSurname())
+                .build();
     }
 
     @Override
-    public List<User> getUserByPhone(String phone) {
-        return userDao.getByPhone(phone);
+    public UserDto getUserByPhone(String phone) throws UserNotFoundException{
+        User user = userDao.getByPhone(phone)
+                .orElseThrow(UserNotFoundException::new);
+        return UserDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .name(user.getName())
+                .accountType(user.getAccountType())
+                .phoneNumber(user.getPhoneNumber())
+                .text(user.getText())
+                .age(user.getAge())
+                .surname(user.getSurname())
+                .build();
     }
 
     @Override
-    public List<User> getUserByEmail(String email) {
-        return userDao.getByEmail(email);
+    public UserDto getUserByEmail(String email) throws UserNotFoundException{
+        User user = userDao.getByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+        return UserDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .name(user.getName())
+                .accountType(user.getAccountType())
+                .phoneNumber(user.getPhoneNumber())
+                .text(user.getText())
+                .age(user.getAge())
+                .surname(user.getSurname())
+                .build();
     }
 
     @Override

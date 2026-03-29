@@ -2,6 +2,7 @@ package kg.attractor.jobsearchjava27.service;
 
 import jakarta.validation.Valid;
 import kg.attractor.jobsearchjava27.dto.UserDto;
+import kg.attractor.jobsearchjava27.exception.NotFoundEntryException;
 import kg.attractor.jobsearchjava27.exception.UserDataCreateException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
@@ -15,11 +16,11 @@ public interface UserService {
 
     UserDto getUserById(int id) throws UserNotFoundException;
 
-    List<User> getUserByName(String name);
+    UserDto getUserByName(String name) throws UserNotFoundException;
 
-    List<User> getUserByPhone(String phone);
+    UserDto getUserByPhone(String phone) throws UserNotFoundException;
 
-    List<User> getUserByEmail(String email);
+    UserDto getUserByEmail(String email) throws UserNotFoundException;
 
     boolean getUserByExistEmail(String email);
 

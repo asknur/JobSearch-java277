@@ -8,13 +8,13 @@ import java.sql.Timestamp;
 @Data
 @Builder
 public class Resume {
-    private Integer id;
+    private Long id;
     private Timestamp updateTime;
     private Timestamp createDate;
     private boolean isActive;
     private float salary;
-    private Category categoryId;
+    private Long categoryId;
     private String name;
-    private User applicantId;
+    private Long applicantId;
 
 }
