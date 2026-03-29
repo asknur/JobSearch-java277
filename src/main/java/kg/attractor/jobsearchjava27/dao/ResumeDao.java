@@ -2,6 +2,7 @@ package kg.attractor.jobsearchjava27.dao;
 
 import kg.attractor.jobsearchjava27.model.Resume;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,14 +28,24 @@ public class ResumeDao {
                 (jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), id)));
     }
 
-    public List<Resume> getResumeByCategoryId(Integer categoryId) {
+    public Optional<Resume> getResumeByCategoryId(Integer id) {
         String sql = "SELECT * FROM resumes WHERE category_id = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
+        try {
+            Resume resume = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Resume.class), id);
+            return Optional.ofNullable(resume);
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
     }
 
-    public List<Resume> getResumeByApplicantId(Integer applicantId) {
+    public Optional<Resume> getResumeByApplicantId(Integer id) {
         String sql = "SELECT * FROM resumes WHERE applicant_id = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), applicantId);
+        try {
+            Resume resume = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Resume.class), id);
+            return Optional.ofNullable(resume);
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
     }
 
     public List<Resume> getAllResume() {
@@ -43,7 +54,7 @@ public class ResumeDao {
     }
 
     public void updateResume(Resume resume) {
-        String sql = " set name = ?, category_id = ?, applicant_id = ?, salary = ?, created_date = ?, updated_time = ?, where id = ? ";
+        String sql = " update resumes set name = ?, category_id = ?, applicant_id = ?, salary = ?, created_date = ?, updated_time = ? where id = ? ";
         jdbcTemplate.update(sql,
                 resume.getName(),
                 resume.getCategoryId(),
@@ -54,7 +65,7 @@ public class ResumeDao {
                 resume.getId());
     }
 
-    public Resume createResume(Resume resume) {
+    public void createResume(Resume resume) {
         String sql = "insert into RESUMES (NAME, CATEGORY_ID, APPLICANT_ID, SALARY, CREATED_DATE)\n" +
                 "values (:name, :categoryId, :applicantId, :salary, :createdDate)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -63,10 +74,9 @@ public class ResumeDao {
         sqlParameterSource.addValue("categoryId", resume.getCategoryId());
         sqlParameterSource.addValue("applicantId", resume.getApplicantId());
         sqlParameterSource.addValue("salary", resume.getSalary());
-        sqlParameterSource.addValue("created_date", resume.getCreateDate());
+        sqlParameterSource.addValue("createdDate", resume.getCreateDate());
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        resume.setId(keyHolder.getKey().intValue());
-        return resume;
+        resume.setId((long) keyHolder.getKey().intValue());
     }
 
     public void deleteResume(int id) {
