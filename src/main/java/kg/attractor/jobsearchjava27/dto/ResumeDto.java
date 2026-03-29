@@ -29,7 +29,7 @@ public class ResumeDto {
 
     @NotNull
     @Min(1)
-    private Category categoryId;
+    private Long categoryId;
 
     @NotBlank
     @Size(min = 1,  max = 20, message = "Should be name of resume")
@@ -37,5 +37,9 @@ public class ResumeDto {
 
     @NotNull
     @Min(1)
-    private User applicantId;
+    private Long applicantId;
+
+    @NotNull
+    @Min(1)
+    private Long id;
 }
