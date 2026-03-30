@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
 import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 import kg.attractor.jobsearchjava27.model.Resume;
+import kg.attractor.jobsearchjava27.service.ResumeService;
 import kg.attractor.jobsearchjava27.service.impl.ResumeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/resumes")
 @RequiredArgsConstructor
 public class ResumeController {
-    private final ResumeServiceImpl resumeService;
+    private final ResumeService resumeService;
 
     @PostMapping
     public void createResume(@RequestBody @Valid ResumeDto resumeDto) {
