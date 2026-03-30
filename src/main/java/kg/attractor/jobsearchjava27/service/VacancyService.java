@@ -14,8 +14,6 @@ public interface VacancyService {
 
     List<Vacancy> getRespondedVacancies(int id);
 
-    List<Vacancy> getAllVacancy();
-
     List<Vacancy> getVacanciesByCategoryId(int id);
 
     List<User> getApplicantsByVacancyId(int id);
