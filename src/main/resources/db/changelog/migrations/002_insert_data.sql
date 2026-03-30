@@ -1,6 +1,7 @@
-﻿INSERT INTO usr (name, surname, age, email, password, phone_number, avatar, account_type)
-VALUES ('Асан', 'Токтосунов', 25, 'asan@example.com', '123', '0500123456', 'avatar1.png', 'applicant'),
-       ('Улан', 'Маматов', 30, 'ulan@example.com', '123', '0500234567', 'avatar2.png', 'employer');
+﻿INSERT INTO usr (name, surname, age, email, password, phone_number, avatar, account_type, enabled)
+VALUES ('Асан', 'Токтосунов', 25, 'asan@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '0500123456', 'avatar1.png', 'admin', true),
+       ('Улан', 'Маматов', 30, 'ulan@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '0500234567', 'avatar2.png', 'user', true),
+       ('Аскар', 'Нурбеков', 25, 'askar@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '0500123546', 'avatar3.png', 'quest', true);
 
 INSERT INTO categories (name, parent_id)
 VALUES ('IT', null),
@@ -15,8 +16,8 @@ VALUES ('email'),
        ('phone');
 
 INSERT INTO resumes (applicant_id, name, category_id, salary, is_active, created_date, update_time)
-VALUES (1, 'Java Developer', 1, 1200.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (1, 'QA Engineer', 1, 900.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+VALUES (2, 'Java Developer', 1, 1200.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (2, 'QA Engineer', 1, 900.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, is_active, author_id, created_date,
                        update_time)
