@@ -1,6 +1,7 @@
 package kg.attractor.jobsearchjava27.controller;
 
 import kg.attractor.jobsearchjava27.model.Vacancy;
+import kg.attractor.jobsearchjava27.service.VacancyService;
 import kg.attractor.jobsearchjava27.service.impl.VacancyServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,11 @@ import java.util.List;
 @RequestMapping("/vacancies")
 @RequiredArgsConstructor
 public class VacancyController {
-    private final VacancyServiceImpl vacancyService;
+    private final VacancyService vacancyService;
 
     @PostMapping
     public ResponseEntity<Vacancy> createVacancy(@RequestBody Vacancy vacancy) {
-        return new  ResponseEntity<>(vacancyService.save(vacancy), HttpStatus.OK);
+        return new ResponseEntity<>(vacancyService.save(vacancy), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
