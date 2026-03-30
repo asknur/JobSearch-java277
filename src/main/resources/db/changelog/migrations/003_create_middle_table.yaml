@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 013
+      author: Askar
+      changes:
+        - createTable:
+            tableName: role_auth
+            columns:
+              - column:
+                  name: role_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_role_auth
+                    nullable: false
+                    references: roles(id)
+              - column:
+                  name: auth_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_auth_role
+                    nullable: false
+                    references: authorities(id)
+        - addPrimaryKey:
+            tableName: role_auth
+            columnNames: role_id, auth_id
+            constraintName: pk_role_auth
+
+  - changeSet:
+      id: 014
+      author: Askar
+      changes:
+        - createTable:
+            tableName: user_role
+            columns:
+              - column:
+                  name: usr_id
+                  type: varchar(100)
+                  constraints:
+                    foreignKeyName: fk_usr_role
+                    nullable: false
+                    references: usr(id)
+              - column:
+                  name: role_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_role_usr
+                    nullable: false
+                    references: roles(id)
+        - addPrimaryKey:
+            tableName: user_role
+            columnNames: usr_id, role_id
+            constraintName: pk_user_role

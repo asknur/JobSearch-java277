@@ -3,6 +3,7 @@ package kg.attractor.jobsearchjava27.dao;
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -19,9 +21,10 @@ public class VacancyDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Vacancy> getVacancyById(int id) {
+    public Optional<Vacancy> getVacancyById(int id) {
         String sql = "SELECT * FROM vacancies WHERE id = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), id);
+        return Optional.ofNullable(DataAccessUtils.singleResult(
+                jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), id)));
     }
 
     public List<Vacancy> getRespondedVacancy(int userId) {
@@ -55,7 +58,10 @@ public class VacancyDao {
     }
 
     public void updateVacancy(Vacancy vacancy) {
-        String sql = "set name = ?, description = ?, category_id = ?, salary = ?, exp_from = ?, exp_to = ?, created_date = ?, where id = ? ";
+        String sql = """
+                UPDATE vacancies SET name = ?, description = ?, category_id = ?, salary = ?,exp_from = ?, exp_to = ?, created_date = ?
+                WHERE id = ?
+                """;
         jdbcTemplate.update(sql,
                 vacancy.getName(),
                 vacancy.getDescription(),
@@ -68,8 +74,10 @@ public class VacancyDao {
     }
 
     public Vacancy createVacancy(Vacancy vacancy) {
-        String sql = "insert into vacancies(name, description,  category_id, salary, exp_from, exp_to, author_id, created_date)\n)" +
-                " values (:name, :description, :category_id, :salary, :exp_from, :exp_to, :author_id, :created_date)";
+        String sql = """
+                INSERT INTO vacancies (name, description, category_id, salary, exp_from, exp_to, author_id, created_date)
+                VALUES (:name, :description, :category_id, :salary, :exp_from, :exp_to, :author_id, :created_date)
+                """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("name", vacancy.getName());

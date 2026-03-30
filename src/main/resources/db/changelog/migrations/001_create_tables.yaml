@@ -4,6 +4,43 @@
       author: Askar
       changes:
         - createTable:
+            tableName: authorities
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: authority
+                  type: varchar(50)
+  - changeSet:
+      id: 002
+      author: Askar
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                  defaultValue: "USER"
+  - changeSet:
+      id: 003
+      author: Askar
+      changes:
+        - createTable:
             tableName: usr
             columns:
               - column:
@@ -43,8 +80,14 @@
               - column:
                   name: account_type
                   type: varchar(100)
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: true
   - changeSet:
-      id: 002
+      id: 004
       author: Askar
       changes:
         - createTable:
@@ -67,7 +110,7 @@
                     foreignKeyName: fk_parent_id
                     references: categories(id)
   - changeSet:
-      id: 003
+      id: 005
       author: Askar
       changes:
         - createTable:
@@ -84,7 +127,7 @@
                   name: type
                   type: varchar(100)
   - changeSet:
-      id: 004
+      id: 006
       author: Askar
       changes:
         - createTable:
@@ -126,7 +169,7 @@
                   name: update_time
                   type: timestamp
   - changeSet:
-      id: 005
+      id: 007
       author: Askar
       changes:
         - createTable:
@@ -176,7 +219,7 @@
                   name: update_time
                   type: timestamp
   - changeSet:
-      id: 006
+      id: 008
       author: Askar
       changes:
         - createTable:
@@ -204,7 +247,7 @@
                   name: contact_value
                   type: varchar(100)
   - changeSet:
-      id: 007
+      id: 009
       author: Askar
       changes:
         - createTable:
@@ -237,9 +280,8 @@
               - column:
                   name: degree
                   type: varchar(100)
-
   - changeSet:
-      id: 008
+      id: 010
       author: Askar
       changes:
         - createTable:
@@ -268,9 +310,9 @@
                   type: varchar(100)
               - column:
                   name: responsibilities
-                  type: varchar(100)
+                  type: varchar(1000)
   - changeSet:
-      id: 009
+      id: 011
       author: Askar
       changes:
         - createTable:
@@ -298,7 +340,7 @@
                   name: confirmation
                   type: boolean
   - changeSet:
-      id: 010
+      id: 012
       author: Askar
       changes:
         - createTable:
