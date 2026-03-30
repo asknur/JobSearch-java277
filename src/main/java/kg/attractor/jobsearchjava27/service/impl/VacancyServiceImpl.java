@@ -42,11 +42,6 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<Vacancy> getAllVacancy() {
-        return vacancyDao.getAllVacancy();
-    }
-
-    @Override
     public List<User> getApplicantsByVacancyId(int id) {
         return vacancyDao.getApplicantsByVacancyId(id);
     }
