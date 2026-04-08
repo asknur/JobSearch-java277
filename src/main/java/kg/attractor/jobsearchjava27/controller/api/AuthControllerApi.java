@@ -1,3 +1,4 @@
+
 package kg.attractor.jobsearchjava27.controller.api;
 
 import jakarta.validation.Valid;
