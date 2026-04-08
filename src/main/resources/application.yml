@@ -4,6 +4,8 @@
   spring:
     application:
       name: JobSearch-java27
+    mvc:
+      static-path-pattern: /static/**
 
     datasource:
       url: jdbc:h2:./db/test;AUTO_SERVER=TRUE

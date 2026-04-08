@@ -1,12 +1,16 @@
 package kg.attractor.jobsearchjava27.service.impl;
 
 import kg.attractor.jobsearchjava27.dao.VacancyDao;
+import kg.attractor.jobsearchjava27.dto.VacancyDto;
+import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
+import kg.attractor.jobsearchjava27.exception.VacancyNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
 import kg.attractor.jobsearchjava27.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,9 +20,33 @@ public class VacancyServiceImpl implements VacancyService {
     private final VacancyDao vacancyDao;
 
     @Override
-    public Vacancy save(Vacancy vacancy) {
-        vacancies.add(vacancy);
-        return vacancy;
+    public void create(VacancyDto vac) {
+        Vacancy vacancy = Vacancy.builder()
+                .name(vac.getName())
+                .categoryId(vac.getCategoryId())
+                .createdTime(vac.getCreatedTime())
+                .authorId(vac.getAuthorId())
+                .description(vac.getDescription())
+                .expFrom(vac.getExpFrom())
+                .expTo(vac.getExpTo())
+                .salary(vac.getSalary())
+                .build();
+        vacancyDao.createVacancy(vacancy);
+    }
+
+    public VacancyDto update(VacancyDto vac) throws VacancyNotFoundException {
+        Vacancy vacancy = vacancyDao.getVacancyById(Math.toIntExact(vac.getId()))
+                .orElseThrow(VacancyNotFoundException::new);
+        vacancy.setName(vac.getName());
+        vacancy.setCategoryId(vac.getCategoryId());
+        vacancy.setCreatedTime(vac.getCreatedTime());
+        vacancy.setAuthorId(vac.getAuthorId());
+        vacancy.setDescription(vac.getDescription());
+        vacancy.setExpFrom(vac.getExpFrom());
+        vacancy.setExpTo(vac.getExpTo());
+        vacancy.setSalary(vac.getSalary());
+        vacancyDao.updateVacancy(vacancy);
+        return vac;
     }
 
     @Override
@@ -27,8 +55,24 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<Vacancy> getAllVacancies() {
-        return vacancyDao.getAllVacancy();
+    public List<VacancyDto> getAllVacancies() {
+        List<Vacancy> vacancy = vacancyDao.getAllVacancy();
+        List<VacancyDto> result = new ArrayList<>();
+
+        vacancies.forEach(e -> {
+            VacancyDto vacancyDto = VacancyDto.builder()
+                    .name(e.getName())
+                    .expTo(e.getExpTo())
+                    .expFrom(e.getExpFrom())
+                    .authorId(e.getAuthorId())
+                    .description(e.getDescription())
+                    .salary(e.getSalary())
+                    .isActive(e.isActive())
+                    .updateTime(e.getUpdateTime())
+                    .build();
+            result.add(vacancyDto);
+        });
+           return result;
     }
 
     @Override

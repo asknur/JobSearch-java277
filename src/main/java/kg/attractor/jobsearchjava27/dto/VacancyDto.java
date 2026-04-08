@@ -23,7 +23,7 @@ public class VacancyDto {
 
     @NotNull
     @Min(1)
-    private User authorId;
+    private Long authorId;
 
     @NotNull
     private boolean isActive;
@@ -38,7 +38,7 @@ public class VacancyDto {
     private float salary;
 
     @NotNull
-    private Category categoryId;
+    private Long categoryId;
 
     @NotBlank
     @Size(min = 1, max = 100)
@@ -47,4 +47,8 @@ public class VacancyDto {
     @NotBlank
     @Size(min = 1, max = 100)
     private String name;
+
+    @NotNull
+    @Min(1)
+    private Long id;
 }

@@ -42,4 +42,5 @@ public class ResumeDto {
     @NotNull
     @Min(1)
     private Long id;
+
 }

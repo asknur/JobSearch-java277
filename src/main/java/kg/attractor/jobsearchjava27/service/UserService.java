@@ -10,6 +10,8 @@ import kg.attractor.jobsearchjava27.model.User;
 import java.util.List;
 
 public interface UserService {
+    String login(UserDto user);
+
     User save(User user);
 
     List<UserDto> getAllUsers();

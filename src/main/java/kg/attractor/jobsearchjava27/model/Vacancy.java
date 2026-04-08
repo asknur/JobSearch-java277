@@ -2,21 +2,25 @@ package kg.attractor.jobsearchjava27.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.security.Timestamp;
 
 @Data
 @Builder
+@Getter
+@Setter
 public class Vacancy {
-    private Integer id;
+    private Long id;
     private Timestamp updateTime;
     private Timestamp createdTime;
-    private User authorId;
+    private Long authorId;
     private boolean isActive;
     private Integer expTo;
     private Integer expFrom;
     private float salary;
-    private Category categoryId;
+    private Long categoryId;
     private String description;
     private String name;
 

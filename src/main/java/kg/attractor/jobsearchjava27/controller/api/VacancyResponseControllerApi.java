@@ -1,4 +1,4 @@
-package kg.attractor.jobsearchjava27.controller;
+package kg.attractor.jobsearchjava27.controller.api;
 
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/response/vacancies")
+@RequestMapping("/api/response/vacancies")
 @RequiredArgsConstructor
-public class VacancyResponseController {
+public class VacancyResponseControllerApi {
     private final VacancyService vacancyService;
 
     @PostMapping("/{id}/apply")

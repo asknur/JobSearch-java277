@@ -1,4 +1,4 @@
-package kg.attractor.jobsearchjava27.controller;
+package kg.attractor.jobsearchjava27.controller.api;
 
 import kg.attractor.jobsearchjava27.dto.ImageDto;
 import kg.attractor.jobsearchjava27.exception.ImageNotFoundException;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Configuration
-@RequestMapping("images")
+@RequestMapping("/api/images")
 @RequiredArgsConstructor
 @RestController
-public class ImageController {
+public class ImageControllerApi {
     private final ImageService imageService;
 
     @PostMapping
