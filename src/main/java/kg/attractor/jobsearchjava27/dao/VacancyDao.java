@@ -1,5 +1,7 @@
 package kg.attractor.jobsearchjava27.dao;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
 import lombok.RequiredArgsConstructor;
@@ -89,7 +91,7 @@ public class VacancyDao {
         sqlParameterSource.addValue("author_id", vacancy.getAuthorId());
         sqlParameterSource.addValue("created_date", vacancy.getCreatedTime());
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        vacancy.setId(keyHolder.getKey().intValue());
+        vacancy.setId((long) keyHolder.getKey().intValue());
         return vacancy;
     }
 

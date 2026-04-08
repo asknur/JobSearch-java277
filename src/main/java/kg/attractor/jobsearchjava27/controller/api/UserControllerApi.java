@@ -1,22 +1,15 @@
-package kg.attractor.jobsearchjava27.controller;
+package kg.attractor.jobsearchjava27.controller.api;
 
-import jakarta.validation.Valid;
 import kg.attractor.jobsearchjava27.dto.UserDto;
-import kg.attractor.jobsearchjava27.exception.UserDataCreateException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
-import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserControllerApi {
     private final UserServiceImpl userService;
 
     @GetMapping("/user/{id}")

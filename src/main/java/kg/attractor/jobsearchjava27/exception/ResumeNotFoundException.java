@@ -4,6 +4,6 @@ import java.nio.file.NoSuchFileException;
 
 public class ResumeNotFoundException extends NoSuchFileException {
   public ResumeNotFoundException() {
-    super("User not found: ");
+    super("Resume not found: ");
   }
 }

@@ -1,16 +1,20 @@
 package kg.attractor.jobsearchjava27.service;
 
+import kg.attractor.jobsearchjava27.dto.VacancyDto;
+import kg.attractor.jobsearchjava27.exception.VacancyNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
 
 import java.util.List;
 
 public interface VacancyService {
-    Vacancy save(Vacancy vacancy);
+    void create(VacancyDto vac);
+
+    VacancyDto update(VacancyDto vac) throws VacancyNotFoundException;
 
     void deleteById(int id);
 
-    List<Vacancy> getAllVacancies();
+    List<VacancyDto> getAllVacancies();
 
     List<Vacancy> getRespondedVacancies(int id);
 
