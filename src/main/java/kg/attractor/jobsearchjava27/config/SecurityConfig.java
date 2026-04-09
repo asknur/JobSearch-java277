@@ -11,9 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
@@ -23,24 +21,31 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final DataSource dataSource;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        String userQuery = "select email, password, enabled\n" +
-                "from usr\n" +
-                "where email = ?;";
+        String userQuery = """
+                select email, password, enabled
+                from usr
+                where email = ?
+                """;
 
-        String authQuery = "select email, role\n" +
-                "from user_table u,\n" +
-                "     roles r\n" +
-                "where u.email = ?\n" +
-                "  and u.role_id = r.id;";
+        String authQuery = """
+                select u.email, r.role
+                from usr u
+                join user_role ur on u.id = ur.usr_id
+                join roles r on ur.role_id = r.id
+                where u.email = ?
+                """;
 
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(userQuery)
-                .authoritiesByUsernameQuery(authQuery);
+                .authoritiesByUsernameQuery(authQuery)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Bean
@@ -48,17 +53,17 @@ public class SecurityConfig {
         http
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .httpBasic(Customizer.withDefaults())
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/", true)
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(PathPatternRequestMatcher.withDefaults().matcher("/auth/logout"))
                         .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/register").permitAll()
 
@@ -81,6 +86,4 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
-
 }
