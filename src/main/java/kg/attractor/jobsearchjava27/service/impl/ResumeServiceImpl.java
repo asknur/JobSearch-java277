@@ -54,6 +54,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         resumes.forEach(e -> {
             ResumeDto resumeDto = ResumeDto.builder()
+                    .id(e.getId())
                     .applicantId(e.getApplicantId())
                     .salary(e.getSalary())
                     .name(e.getName())

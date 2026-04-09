@@ -12,14 +12,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class VacancyDto {
-    private Timestamp updateTime;
-    private Timestamp createdTime;
+    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
 
     @NotNull
     @Min(1)

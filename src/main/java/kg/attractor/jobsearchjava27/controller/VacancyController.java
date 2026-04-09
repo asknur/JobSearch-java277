@@ -8,16 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/vacancy")
 @RequiredArgsConstructor
-public class MainController {
+public class VacancyController {
     private final VacancyService vacancyService;
 
     @GetMapping
-    public String showInfo(Model model) {
+    public String listVacancies(Model model) {
         model.addAttribute("vacancy", vacancyService.getAllVacancies());
         return "vacancy";
     }
-
 
 }

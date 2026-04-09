@@ -21,7 +21,7 @@ public class UserDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public Optional<User> findById(int id) {
+    public Optional<User> findById(Long id) {
         String sql = "SELECT * FROM usr WHERE id = ?";
         try {
             User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), id);

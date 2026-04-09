@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserService {
     String login(UserDto user);
 
-    User save(User user);
+    User save(UserDto user);
 
     List<UserDto> getAllUsers();
 
