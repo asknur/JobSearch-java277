@@ -12,14 +12,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ResumeDto {
-    private Timestamp updateTime;
-    private Timestamp createDate;
+    private LocalDateTime updateTime;
+    private LocalDateTime createDate;
 
     @NotNull
     private boolean isActive;
