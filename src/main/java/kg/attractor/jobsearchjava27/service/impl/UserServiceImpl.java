@@ -35,8 +35,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
-        users.add(user);
+    public User save(UserDto userDto){
+        log.info("Saving user: {}", userDto);
+        User user = new User();
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
+        userDto.setEmail(userDto.getEmail());
+        userDto.setName(userDto.getName());
+        userDto.setSurname(userDto.getSurname());
+        userDto.setAccountType(userDto.getAccountType());
+        userDto.setPhoneNumber(String.valueOf(userDto.getPhoneNumber()));
         return user;
     }
 
@@ -58,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(int id) throws UserNotFoundException {
-        User user = userDao.findById(id)
+        User user = userDao.findById((long) id)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
                 .email(user.getEmail())
