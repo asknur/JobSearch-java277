@@ -1,5 +1,5 @@
-<#import "./layout.ftlh" as layout>
-<@layout.layout>
+<#import "./layout.ftlh" as main>
+<@main.layout>
     <h2 class="mb-4">Вакансии</h2>
     <div class="row">
         <#list vacancy as vac>
@@ -28,5 +28,4 @@
             </div>
         </#list>
     </div>
-</@layout.layout>
-
+</@main.layout>
