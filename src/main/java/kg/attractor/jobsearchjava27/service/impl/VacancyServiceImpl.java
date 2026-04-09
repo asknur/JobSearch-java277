@@ -56,11 +56,11 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<VacancyDto> getAllVacancies() {
-        List<Vacancy> vacancy = vacancyDao.getAllVacancy();
+        List<Vacancy> vacancies = vacancyDao.getAllVacancy();
         List<VacancyDto> result = new ArrayList<>();
-
         vacancies.forEach(e -> {
             VacancyDto vacancyDto = VacancyDto.builder()
+                    .id(e.getId())
                     .name(e.getName())
                     .expTo(e.getExpTo())
                     .expFrom(e.getExpFrom())
