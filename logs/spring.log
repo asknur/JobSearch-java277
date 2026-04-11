@@ -1,0 +1,29 @@
+2026-04-11 16:01:07 INFO  [restartedMain] k.a.j.JobSearchJava27Application - Starting JobSearchJava27Application using Java 24 with PID 915 (/Users/askar/Desktop/JobSearch-java27/target/classes started by askar in /Users/askar/Desktop/JobSearch-java27)
+2026-04-11 16:01:07 DEBUG [restartedMain] k.a.j.JobSearchJava27Application - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-11 16:01:07 INFO  [restartedMain] k.a.j.JobSearchJava27Application - No active profile set, falling back to 1 default profile: "default"
+2026-04-11 16:01:07 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-11 16:01:07 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-11 16:01:08 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8089 (http)
+2026-04-11 16:01:08 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-11 16:01:08 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-11 16:01:08 INFO  [restartedMain] o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 879 ms
+2026-04-11 16:01:08 WARN  [restartedMain] o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfig' defined in file [/Users/askar/Desktop/JobSearch-java27/target/classes/kg/attractor/jobsearchjava27/config/SecurityConfig.class]: Unsatisfied dependency expressed through constructor parameter 1: No qualifying bean of type 'org.springframework.security.crypto.password.PasswordEncoder' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2026-04-11 16:01:08 INFO  [restartedMain] o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-04-11 16:01:08 INFO  [restartedMain] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-11 16:01:08 ERROR [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in kg.attractor.jobsearchjava27.config.SecurityConfig required a bean of type 'org.springframework.security.crypto.password.PasswordEncoder' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.security.crypto.password.PasswordEncoder' in your configuration.
+
