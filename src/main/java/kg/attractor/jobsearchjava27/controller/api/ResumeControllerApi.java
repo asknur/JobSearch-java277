@@ -45,8 +45,8 @@ public class ResumeControllerApi {
     }
 
     @GetMapping("/applicant/{id}")
-    public ResumeDto getResumesByApplicantId(@PathVariable int id) throws ResumeNotFoundException {
-        return resumeService.getResumeByApplicantId(id);
+    public ResumeDto getResumesByApplicantId(@PathVariable Long id) throws ResumeNotFoundException {
+        return (ResumeDto) resumeService.getResumesByApplicantId(id);
     }
 
 

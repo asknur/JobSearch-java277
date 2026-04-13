@@ -2,7 +2,6 @@ package kg.attractor.jobsearchjava27.service.impl;
 
 import kg.attractor.jobsearchjava27.dao.VacancyDao;
 import kg.attractor.jobsearchjava27.dto.VacancyDto;
-import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 import kg.attractor.jobsearchjava27.exception.VacancyNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
@@ -16,7 +15,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
-    private final List<Vacancy> vacancies;
     private final VacancyDao vacancyDao;
 
     @Override
@@ -35,7 +33,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     public VacancyDto update(VacancyDto vac) throws VacancyNotFoundException {
-        Vacancy vacancy = vacancyDao.getVacancyById(Math.toIntExact(vac.getId()))
+        Vacancy vacancy = vacancyDao.getVacancyById((vac.getId()))
                 .orElseThrow(VacancyNotFoundException::new);
         vacancy.setName(vac.getName());
         vacancy.setCategoryId(vac.getCategoryId());
@@ -47,6 +45,22 @@ public class VacancyServiceImpl implements VacancyService {
         vacancy.setSalary(vac.getSalary());
         vacancyDao.updateVacancy(vacancy);
         return vac;
+    }
+
+    @Override
+    public VacancyDto findById(Long id) throws VacancyNotFoundException{
+        Vacancy vacancy = vacancyDao.getVacancyById(id)
+                .orElseThrow(VacancyNotFoundException::new);
+        return VacancyDto.builder()
+                .name(vacancy.getName())
+                .description(vacancy.getDescription())
+                .categoryId(vacancy.getCategoryId())
+                .createdTime(vacancy.getCreatedTime())
+                .authorId(vacancy.getAuthorId())
+                .expFrom(vacancy.getExpFrom())
+                .expTo(vacancy.getExpTo())
+                .salary(vacancy.getSalary())
+                .build();
     }
 
     @Override
@@ -81,13 +95,41 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<Vacancy> getRespondedVacancies(int id) {
-        return vacancyDao.getRespondedVacancy(id);
+    public List<VacancyDto> getRespondedVacancies(Long applicantId) {
+        return vacancyDao.getRespondedVacancies(applicantId)
+                .stream()
+                .map(v -> VacancyDto.builder()
+                        .id(v.getId())
+                        .name(v.getName())
+                        .description(v.getDescription())
+                        .salary(v.getSalary())
+                        .isActive(v.isActive())
+                        .expFrom(v.getExpFrom())
+                        .expTo(v.getExpTo())
+                        .build())
+                .toList();
     }
 
     @Override
     public List<User> getApplicantsByVacancyId(int id) {
         return vacancyDao.getApplicantsByVacancyId(id);
+    }
+
+    @Override
+    public List<VacancyDto> getVacanciesByAuthorId(Long authorId) {
+        return vacancyDao.getVacanciesByAuthorId(authorId)
+                .stream()
+                .map(v -> VacancyDto.builder()
+                        .id(v.getId())
+                        .name(v.getName())
+                        .description(v.getDescription())
+                        .salary(v.getSalary())
+                        .isActive(v.isActive())
+                        .expFrom(v.getExpFrom())
+                        .expTo(v.getExpTo())
+                        .respondedCount(vacancyDao.getRespondedCountByVacancyId(v.getId()))
+                        .build())
+                .toList();
     }
 
 

@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class VacancyDto {
+    private int respondedCount;
+
+
     private LocalDateTime updateTime;
     private LocalDateTime createdTime;
 

@@ -31,7 +31,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public ResumeDto update(ResumeDto res) throws ResumeNotFoundException {
-        Resume resume = resumeDao.getResumeById(Math.toIntExact(res.getId()))
+        Resume resume = resumeDao.getResumeById((long) Math.toIntExact(res.getId()))
                 .orElseThrow(ResumeNotFoundException::new);
         resume.setName(res.getName());
         resume.setCategoryId(res.getCategoryId());
@@ -40,6 +40,22 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setUpdateTime(res.getUpdateTime());
         resumeDao.updateResume(resume);
         return res;
+    }
+
+    @Override
+    public ResumeDto findById(Long id) throws ResumeNotFoundException{
+        Resume resume = resumeDao.getResumeById(id)
+                .orElseThrow(ResumeNotFoundException::new);
+        return ResumeDto.builder()
+                .name(resume.getName())
+                .applicantId(resume.getApplicantId())
+                .salary(resume.getSalary())
+                .name(resume.getName())
+                .updateTime(resume.getUpdateTime())
+                .createDate(resume.getCreateDate())
+                .categoryId(resume.getCategoryId())
+                .isActive(resume.isActive())
+                .build();
     }
 
     @Override
@@ -84,19 +100,19 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public ResumeDto getResumeByApplicantId(int id) throws ResumeNotFoundException{
-        Resume resume = resumeDao.getResumeByApplicantId(id)
-                .orElseThrow(ResumeNotFoundException::new);
-        return ResumeDto.builder()
-                .applicantId(resume.getApplicantId())
-                .name(resume.getName())
-                .categoryId(resume.getCategoryId())
-                .salary(resume.getSalary())
-                .isActive(resume.isActive())
-                .createDate(resume.getCreateDate())
-                .updateTime(resume.getUpdateTime())
-                .build();
-
+    public List<ResumeDto> getResumesByApplicantId(Long id) {
+        return resumeDao.getResumesByApplicantId(id)
+                .stream()
+                .map(r -> ResumeDto.builder()
+                        .id(r.getId())
+                        .name(r.getName())
+                        .salary(r.getSalary())
+                        .categoryId(r.getCategoryId())
+                        .isActive(r.isActive())
+                        .createDate(r.getCreateDate())
+                        .updateTime(r.getUpdateTime())
+                        .build())
+                .toList();
     }
 
 }

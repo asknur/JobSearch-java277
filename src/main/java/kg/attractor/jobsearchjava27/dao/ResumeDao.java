@@ -22,7 +22,7 @@ public class ResumeDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-    public Optional<Resume> getResumeById(int id) {
+    public Optional<Resume> getResumeById(Long id) {
         String sql = "SELECT * FROM resumes WHERE id = ?";
         return Optional.ofNullable(DataAccessUtils.singleResult
                 (jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resume.class), id)));
@@ -38,14 +38,18 @@ public class ResumeDao {
         }
     }
 
-    public Optional<Resume> getResumeByApplicantId(Integer id) {
+    public List<Resume> getResumesByApplicantId(Long applicantId) {
         String sql = "SELECT * FROM resumes WHERE applicant_id = ?";
-        try {
-            Resume resume = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Resume.class), id);
-            return Optional.ofNullable(resume);
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
-        }
+        return jdbcTemplate.query(sql, (rs, rowNum) -> Resume.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .categoryId(rs.getLong("category_id"))
+                .applicantId(rs.getLong("applicant_id"))
+                .salary(rs.getFloat("salary"))
+                .isActive(rs.getBoolean("is_active"))
+                .createDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
+                .build(), applicantId);
     }
 
     public List<Resume> getAllResume() {
@@ -83,5 +87,7 @@ public class ResumeDao {
         String sql = "delete from RESUMES where id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+
 
 }

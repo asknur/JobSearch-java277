@@ -1,4 +1,4 @@
-<#import "./layout.ftlh" as main>
+<#import "../layout.ftlh" as main>
 <@main.layout>
     <div class="container mt-5">
         <div class="row">
@@ -14,18 +14,17 @@
                         </h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                             class="rounded-circle mb-3" width="120" height="120" alt="Avatar">
+                        <img src="${(user.avatar)!"default.png"}" class="rounded-circle mb-3" width="120" height="120" alt="user.name">
                         <h4>${user.surname} ${user.name}</h4>
                         <p class="text-muted">${user.email}</p>
                         <p><strong>Возраст:</strong> ${user.age}</p>
-                        <p><strong>Телефон:</strong> ${user.phone_number!"Не указан"}</p>
+                        <p><strong>Телефон:</strong> ${user.phoneNumber!"Не указан"}</p>
 
                         <span class="badge bg-primary">${user.accountType}</span>
 
                         <div class="d-flex justify-content-center mt-3 gap-2">
                             <a href="/profile/edit" class="btn btn-outline-primary rounded-pill px-4">Редактировать</a>
-                            <form action="/logout" method="post">
+                            <form action="/auth/logout" method="post">
                                 <button type="submit" class="btn btn-outline-primary rounded-pill px-4" id="logout">
                                     Выйти
                                 </button>
@@ -40,7 +39,7 @@
                 <div class="card shadow-sm border-0 rounded-4">
                     <div class="card-header bg-light rounded-top-4">
                         <h5 class="mb-0">
-                            <#if user.accountType== "applicant">
+                            <#if user.accountType== "APPLICANT">
                                 Мои резюме и отклики
                             <#else>
                                 Мои вакансии и отклики
@@ -48,7 +47,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <#if user.accountType == "applicant">
+                        <#if user.accountType == "APPLICANT">
                             <h6 class="mb-3">Мои резюме</h6>
                             <#if resumes?has_content>
                                 <ul class="list-group mb-4">
@@ -62,7 +61,7 @@
                             <#else>
                                 <p class="text-muted">Резюме пока нет.</p>
                             </#if>
-                            <#if user.accountType == "applicant">
+                            <#if user.accountType == "APPLICANT">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h6 class="mb-0">Мои резюме</h6>
                                     <a href="/resume/create" class="btn btn-sm btn-success rounded-pill">+ Создать резюме</a>
@@ -85,7 +84,7 @@
                         </#if>
 
                         <!-- Для работодателя -->
-                        <#if user.accountType == "employer">
+                        <#if user.accountType == "EMPLOYER">
                             <h6 class="mb-3">Мои вакансии</h6>
                             <#if vacancies?has_content>
                                 <ul class="list-group mb-4">

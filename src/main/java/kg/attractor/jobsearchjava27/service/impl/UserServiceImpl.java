@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final List<User> users;
     private final UserDao userDao;
     private final PasswordEncoder encoder;
 
@@ -38,12 +37,13 @@ public class UserServiceImpl implements UserService {
     public User save(UserDto userDto){
         log.info("Saving user: {}", userDto);
         User user = new User();
-        userDto.setPassword(encoder.encode(userDto.getPassword()));
-        userDto.setEmail(userDto.getEmail());
-        userDto.setName(userDto.getName());
-        userDto.setSurname(userDto.getSurname());
-        userDto.setAccountType(userDto.getAccountType());
-        userDto.setPhoneNumber(String.valueOf(userDto.getPhoneNumber()));
+        user.setPassword(encoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setAccountType(userDto.getAccountType());
+        user.setPhoneNumber(String.valueOf(userDto.getPhoneNumber()));
+        userDao.create(user);
         return user;
     }
 
@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
                 .text(user.getText())
                 .age(user.getAge())
                 .surname(user.getSurname())
+                .avatar(user.getAvatar())
                 .build();
     }
 
@@ -112,10 +113,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByEmail(String email) throws UserNotFoundException{
+    public UserDto getUserByEmail(String email) throws UserNotFoundException {
         User user = userDao.getByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .name(user.getName())

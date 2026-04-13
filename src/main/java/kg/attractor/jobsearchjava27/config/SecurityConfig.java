@@ -70,16 +70,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/vacancies").permitAll()
                         .requestMatchers(HttpMethod.GET, "/vacancies/category/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/resumes").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/resumes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/resumes").hasRole("EMPLOYER")
+                        .requestMatchers(HttpMethod.GET, "/resumes/**").hasRole("EMPLOYER")
 
-                        .requestMatchers(HttpMethod.POST, "/vacancies").hasAuthority("USER")
-                        .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasAuthority("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/vacancies/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/vacancies").hasRole("APPLICANT")
+                        .requestMatchers(HttpMethod.PUT, "/vacancies/**").hasRole("APPLICANT")
+                        .requestMatchers(HttpMethod.DELETE, "/vacancies/**").hasRole("APPLICANT")
 
-                        .requestMatchers(HttpMethod.POST, "/resumes").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/resumes/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/resumes/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/resumes").hasRole("EMPLOYER")
+                        .requestMatchers(HttpMethod.PUT, "/resumes/**").hasRole("EMPLOYER")
+                        .requestMatchers(HttpMethod.DELETE, "/resumes/**").hasRole("EMPLOYER")
 
                         .requestMatchers("/users/**").authenticated()
                         .anyRequest().authenticated()

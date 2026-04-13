@@ -1,6 +1,6 @@
 <#import "./layout.ftlh" as layout>
 <@layout.layout>
-    <h2 class="mb-4">Вакансии</h2>
+    <h2 class="mb-4">Главная страница</h2>
     <div class="row">
         <#list vacancy as vac>
             <div class="col-md-4 mb-3">
