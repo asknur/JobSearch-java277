@@ -10,11 +10,13 @@ public interface ResumeService {
 
     ResumeDto update(ResumeDto resume) throws ResumeNotFoundException;
 
+    ResumeDto findById(Long id) throws ResumeNotFoundException;
+
     void deleteById(int id);
 
     List<ResumeDto> getAllResume();
 
     ResumeDto getResumeByCategoryId(int category) throws ResumeNotFoundException;
 
-    ResumeDto getResumeByApplicantId(int id) throws ResumeNotFoundException;
+    List<ResumeDto> getResumesByApplicantId(Long id) throws ResumeNotFoundException;
 }
