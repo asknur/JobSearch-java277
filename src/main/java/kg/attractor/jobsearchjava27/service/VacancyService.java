@@ -12,13 +12,17 @@ public interface VacancyService {
 
     VacancyDto update(VacancyDto vac) throws VacancyNotFoundException;
 
+    VacancyDto findById(Long id) throws VacancyNotFoundException;
+
     void deleteById(int id);
 
     List<VacancyDto> getAllVacancies();
 
-    List<Vacancy> getRespondedVacancies(int id);
+    List<VacancyDto> getRespondedVacancies(Long applicantId);
 
     List<Vacancy> getVacanciesByCategoryId(int id);
 
     List<User> getApplicantsByVacancyId(int id);
+
+    List<VacancyDto> getVacanciesByAuthorId(Long authorId);
 }
