@@ -16,10 +16,10 @@ import java.util.List;
 public class VacancyResponseControllerApi {
     private final VacancyService vacancyService;
 
-    @PostMapping("/{id}/apply")
-    public ResponseEntity<List<Vacancy>> respondVacancy(@PathVariable int id, @RequestParam int userId) {
-        return new ResponseEntity<>(vacancyService.getRespondedVacancies(userId), HttpStatus.OK);
-    }
+//    @PostMapping("/{id}/apply")
+//    public ResponseEntity<List<Vacancy>> respondVacancy(@PathVariable int id, @RequestParam int userId) {
+//        return new ResponseEntity<>(vacancyService.getRespondedVacancies((long) userId), HttpStatus.OK);
+//    }
 
     @GetMapping("/{id}/applicants")
     public ResponseEntity<List<User>> getApplicants(@PathVariable int id) {
