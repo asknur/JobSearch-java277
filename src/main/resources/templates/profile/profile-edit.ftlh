@@ -1,4 +1,4 @@
-<#import "layout.ftlh" as main>
+<#import "../layout.ftlh" as main>
 <@main.layout>
     <h2 class="mb-4">Редактирование профиля</h2>
     <form method="post" action="/profile/edit">
