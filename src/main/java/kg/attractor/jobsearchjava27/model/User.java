@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
-    private Integer id;
+    private Long id;
     private String accountType;
     private String avatar;
     private String phoneNumber;
