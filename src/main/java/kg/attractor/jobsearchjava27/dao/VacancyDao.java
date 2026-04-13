@@ -23,20 +23,32 @@ public class VacancyDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public Optional<Vacancy> getVacancyById(int id) {
+    public Optional<Vacancy> getVacancyById(Long id) {
         String sql = "SELECT * FROM vacancies WHERE id = ?";
         return Optional.ofNullable(DataAccessUtils.singleResult(
                 jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), id)));
     }
 
-    public List<Vacancy> getRespondedVacancy(int userId) {
+    public List<Vacancy> getRespondedVacancies(Long applicantId) {
         String sql = """
-                select * from responded_applicants ra
-                join resumes r on ra.resume_id = r.id
-                join vacancies v on ra.vacancy_id = v.id
-                where r.applicant_id = ?
-                """;
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
+            SELECT v.* FROM vacancies v
+            JOIN responded_applicants ra ON v.id = ra.vacancy_id
+            JOIN resumes r ON ra.resume_id = r.id
+            WHERE r.applicant_id = ?
+            """;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> Vacancy.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .description(rs.getString("description"))
+                .categoryId(rs.getLong("category_id"))
+                .salary(rs.getFloat("salary"))
+                .expFrom(rs.getInt("exp_from"))
+                .expTo(rs.getInt("exp_to"))
+                .isActive(rs.getBoolean("is_active"))
+                .authorId(rs.getLong("author_id"))
+                .createdTime(rs.getTimestamp("created_date").toLocalDateTime())
+                .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
+                .build(), applicantId);
     }
 
     public List<Vacancy> getAllVacancy() {
@@ -101,5 +113,26 @@ public class VacancyDao {
 
     }
 
+    public List<Vacancy> getVacanciesByAuthorId(Long authorId) {
+        String sql = "SELECT * FROM vacancies WHERE author_id = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> Vacancy.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .description(rs.getString("description"))
+                .categoryId(rs.getLong("category_id"))
+                .salary(rs.getFloat("salary"))
+                .expFrom(rs.getInt("exp_from"))
+                .expTo(rs.getInt("exp_to"))
+                .isActive(rs.getBoolean("is_active"))
+                .authorId(rs.getLong("author_id"))
+                .createdTime(rs.getTimestamp("created_date").toLocalDateTime())
+                .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
+                .build(), authorId);
+    }
+
+    public int getRespondedCountByVacancyId(Long vacancyId) {
+        String sql = "SELECT COUNT(*) FROM responded_applicants WHERE vacancy_id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, vacancyId);
+    }
 
 }
