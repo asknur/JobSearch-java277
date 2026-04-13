@@ -73,7 +73,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public ResponseEntity<?> getById(String name) {
-        return getOutputFile(name,"images", MediaType.IMAGE_JPEG);
+        return getOutputFile(name,"/images", MediaType.IMAGE_JPEG);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public byte[] getDownloadedFile(String fileName, String subDir) throws IOException{
-        return Files.readAllBytes(Paths.get(UPLOADED_DIR + subDir + "/" + subDir));
+        return Files.readAllBytes(Paths.get(UPLOADED_DIR + subDir + "/" + fileName));
     }
 
     @Override
