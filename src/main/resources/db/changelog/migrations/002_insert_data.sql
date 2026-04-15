@@ -1,4 +1,4 @@
-﻿-- USERS
+﻿-- USERS password - qwe
 INSERT INTO usr (name, surname, age, email, password, phone_number, avatar, account_type, enabled)
 VALUES
     ('Улан',    'Маматов',    30, 'ulan@example.com',    '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '0500234567', 'avatar2.png',  'EMPLOYER',  true),
