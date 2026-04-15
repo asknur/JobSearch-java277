@@ -23,11 +23,11 @@ public class VacancyDto {
 
 
     private LocalDateTime updateTime;
-    private LocalDateTime createdTime;
+    private LocalDateTime createdDate;
 
     @NotNull
     @Min(1)
-    private Long authorId;
+    private User authorId;
 
     @NotNull
     private boolean isActive;
@@ -42,7 +42,7 @@ public class VacancyDto {
     private float salary;
 
     @NotNull
-    private Long categoryId;
+    private Category categoryId;
 
     @NotBlank
     @Size(min = 1, max = 100)
