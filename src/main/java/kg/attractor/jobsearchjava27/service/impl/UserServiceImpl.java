@@ -5,6 +5,7 @@ import kg.attractor.jobsearchjava27.dto.UserDto;
 import kg.attractor.jobsearchjava27.exception.UserDataCreateException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
+import kg.attractor.jobsearchjava27.repository.UserRepository;
 import kg.attractor.jobsearchjava27.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
     @Override
@@ -64,8 +66,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(int id) throws UserNotFoundException {
-        User user = userDao.findById((long) id)
+    public UserDto getUserById(Long id) throws UserNotFoundException {
+//        User user = userDao.findById((long) id)
+//                .orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
                 .email(user.getEmail())
@@ -73,7 +77,6 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .accountType(user.getAccountType())
                 .phoneNumber(user.getPhoneNumber())
-                .text(user.getText())
                 .age(user.getAge())
                 .surname(user.getSurname())
                 .avatar(user.getAvatar())
@@ -90,7 +93,6 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .accountType(user.getAccountType())
                 .phoneNumber(user.getPhoneNumber())
-                .text(user.getText())
                 .age(user.getAge())
                 .surname(user.getSurname())
                 .build();
@@ -106,7 +108,6 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .accountType(user.getAccountType())
                 .phoneNumber(user.getPhoneNumber())
-                .text(user.getText())
                 .age(user.getAge())
                 .surname(user.getSurname())
                 .build();
@@ -123,7 +124,6 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .accountType(user.getAccountType())
                 .phoneNumber(user.getPhoneNumber())
-                .text(user.getText())
                 .age(user.getAge())
                 .surname(user.getSurname())
                 .build();
