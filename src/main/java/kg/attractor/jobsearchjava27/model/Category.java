@@ -1,14 +1,27 @@
 package kg.attractor.jobsearchjava27.model;
 
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "categories", schema = "public")
 public class Category {
-    private Integer id;
+
+    @Id
+    private Long id;
+
+    @Column(name = "name")
     private String name;
-    private int parentId;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Category parent;
 
 }

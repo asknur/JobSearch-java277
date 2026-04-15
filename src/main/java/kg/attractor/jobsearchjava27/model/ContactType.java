@@ -1,12 +1,22 @@
 package kg.attractor.jobsearchjava27.model;
 
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "contact_type", schema = "public")
 public class ContactType {
-    private Integer id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "type")
     private String type;
-    private Integer parentId;
 }

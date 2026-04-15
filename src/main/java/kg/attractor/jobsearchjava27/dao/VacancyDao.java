@@ -40,13 +40,13 @@ public class VacancyDao {
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
                 .description(rs.getString("description"))
-                .categoryId(rs.getLong("category_id"))
+//                .categoryId(rs.getLong("category_id"))
                 .salary(rs.getFloat("salary"))
                 .expFrom(rs.getInt("exp_from"))
                 .expTo(rs.getInt("exp_to"))
                 .isActive(rs.getBoolean("is_active"))
-                .authorId(rs.getLong("author_id"))
-                .createdTime(rs.getTimestamp("created_date").toLocalDateTime())
+//                .authorId(rs.getLong("author_id"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
                 .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
                 .build(), applicantId);
     }
@@ -83,7 +83,7 @@ public class VacancyDao {
                 vacancy.getSalary(),
                 vacancy.getExpFrom(),
                 vacancy.getExpTo(),
-                vacancy.getCreatedTime(),
+                vacancy.getCreatedDate(),
                 vacancy.getId());
     }
 
@@ -101,7 +101,7 @@ public class VacancyDao {
         sqlParameterSource.addValue("exp_from", vacancy.getExpFrom());
         sqlParameterSource.addValue("exp_to", vacancy.getExpTo());
         sqlParameterSource.addValue("author_id", vacancy.getAuthorId());
-        sqlParameterSource.addValue("created_date", vacancy.getCreatedTime());
+        sqlParameterSource.addValue("created_date", vacancy.getCreatedDate());
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         vacancy.setId((long) keyHolder.getKey().intValue());
         return vacancy;
@@ -119,13 +119,13 @@ public class VacancyDao {
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
                 .description(rs.getString("description"))
-                .categoryId(rs.getLong("category_id"))
+//                .categoryId(rs.getLong("category_id"))
                 .salary(rs.getFloat("salary"))
                 .expFrom(rs.getInt("exp_from"))
                 .expTo(rs.getInt("exp_to"))
                 .isActive(rs.getBoolean("is_active"))
-                .authorId(rs.getLong("author_id"))
-                .createdTime(rs.getTimestamp("created_date").toLocalDateTime())
+//                .authorId(rs.getLong("author_id"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
                 .updateTime(rs.getTimestamp("update_time").toLocalDateTime())
                 .build(), authorId);
     }

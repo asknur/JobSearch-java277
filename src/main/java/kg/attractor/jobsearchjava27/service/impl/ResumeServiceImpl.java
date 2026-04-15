@@ -20,8 +20,8 @@ public class ResumeServiceImpl implements ResumeService {
     public void create(ResumeDto res) {
         Resume resume = Resume.builder()
                 .name(res.getName())
-                .categoryId(res.getCategoryId())
-                .applicantId(res.getApplicantId())
+                .category(res.getCategoryId())
+                .applicant(res.getApplicantId())
                 .salary(res.getSalary())
                 .createDate(res.getCreateDate())
                 .isActive(res.isActive())
@@ -34,8 +34,8 @@ public class ResumeServiceImpl implements ResumeService {
         Resume resume = resumeDao.getResumeById((long) Math.toIntExact(res.getId()))
                 .orElseThrow(ResumeNotFoundException::new);
         resume.setName(res.getName());
-        resume.setCategoryId(res.getCategoryId());
-        resume.setApplicantId(res.getApplicantId());
+        resume.setCategory(res.getCategoryId());
+        resume.setApplicant(res.getApplicantId());
         resume.setSalary(res.getSalary());
         resume.setUpdateTime(res.getUpdateTime());
         resumeDao.updateResume(resume);
@@ -48,12 +48,12 @@ public class ResumeServiceImpl implements ResumeService {
                 .orElseThrow(ResumeNotFoundException::new);
         return ResumeDto.builder()
                 .name(resume.getName())
-                .applicantId(resume.getApplicantId())
+                .applicantId(resume.getApplicant())
                 .salary(resume.getSalary())
                 .name(resume.getName())
                 .updateTime(resume.getUpdateTime())
                 .createDate(resume.getCreateDate())
-                .categoryId(resume.getCategoryId())
+                .categoryId(resume.getCategory())
                 .isActive(resume.isActive())
                 .build();
     }
@@ -71,12 +71,12 @@ public class ResumeServiceImpl implements ResumeService {
         resumes.forEach(e -> {
             ResumeDto resumeDto = ResumeDto.builder()
                     .id(e.getId())
-                    .applicantId(e.getApplicantId())
+                    .applicantId(e.getApplicant())
                     .salary(e.getSalary())
                     .name(e.getName())
                     .updateTime(e.getUpdateTime())
                     .createDate(e.getCreateDate())
-                    .categoryId(e.getCategoryId())
+                    .categoryId(e.getCategory())
                     .isActive(e.isActive())
                     .build();
             result.add(resumeDto);
@@ -89,9 +89,9 @@ public class ResumeServiceImpl implements ResumeService {
         Resume resume = resumeDao.getResumeByCategoryId(id)
                 .orElseThrow(ResumeNotFoundException::new);
         return ResumeDto.builder()
-                .applicantId(resume.getApplicantId())
+                .applicantId(resume.getApplicant())
                 .name(resume.getName())
-                .categoryId(resume.getCategoryId())
+                .categoryId(resume.getCategory())
                 .salary(resume.getSalary())
                 .isActive(resume.isActive())
                 .createDate(resume.getCreateDate())
@@ -107,7 +107,7 @@ public class ResumeServiceImpl implements ResumeService {
                         .id(r.getId())
                         .name(r.getName())
                         .salary(r.getSalary())
-                        .categoryId(r.getCategoryId())
+                        .categoryId(r.getCategory())
                         .isActive(r.isActive())
                         .createDate(r.getCreateDate())
                         .updateTime(r.getUpdateTime())

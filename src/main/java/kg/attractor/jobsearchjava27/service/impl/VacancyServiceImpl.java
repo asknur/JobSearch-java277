@@ -22,7 +22,7 @@ public class VacancyServiceImpl implements VacancyService {
         Vacancy vacancy = Vacancy.builder()
                 .name(vac.getName())
                 .categoryId(vac.getCategoryId())
-                .createdTime(vac.getCreatedTime())
+                .createdDate(vac.getCreatedDate())
                 .authorId(vac.getAuthorId())
                 .description(vac.getDescription())
                 .expFrom(vac.getExpFrom())
@@ -37,7 +37,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .orElseThrow(VacancyNotFoundException::new);
         vacancy.setName(vac.getName());
         vacancy.setCategoryId(vac.getCategoryId());
-        vacancy.setCreatedTime(vac.getCreatedTime());
+        vacancy.setCreatedDate(vac.getCreatedDate());
         vacancy.setAuthorId(vac.getAuthorId());
         vacancy.setDescription(vac.getDescription());
         vacancy.setExpFrom(vac.getExpFrom());
@@ -55,7 +55,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .name(vacancy.getName())
                 .description(vacancy.getDescription())
                 .categoryId(vacancy.getCategoryId())
-                .createdTime(vacancy.getCreatedTime())
+                .createdDate(vacancy.getCreatedDate())
                 .authorId(vacancy.getAuthorId())
                 .expFrom(vacancy.getExpFrom())
                 .expTo(vacancy.getExpTo())

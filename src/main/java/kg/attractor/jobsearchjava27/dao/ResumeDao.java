@@ -43,8 +43,8 @@ public class ResumeDao {
         return jdbcTemplate.query(sql, (rs, rowNum) -> Resume.builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
-                .categoryId(rs.getLong("category_id"))
-                .applicantId(rs.getLong("applicant_id"))
+//                .category(rs.getLong("category_id"))
+//                .applicantId(rs.getLong("applicant_id"))
                 .salary(rs.getFloat("salary"))
                 .isActive(rs.getBoolean("is_active"))
                 .createDate(rs.getTimestamp("created_date").toLocalDateTime())
@@ -61,8 +61,8 @@ public class ResumeDao {
         String sql = " update resumes set name = ?, category_id = ?, applicant_id = ?, salary = ?, created_date = ?, updated_time = ? where id = ? ";
         jdbcTemplate.update(sql,
                 resume.getName(),
-                resume.getCategoryId(),
-                resume.getApplicantId(),
+                resume.getCategory(),
+                resume.getApplicant(),
                 resume.getSalary(),
                 resume.getCreateDate(),
                 resume.getUpdateTime(),
@@ -75,8 +75,8 @@ public class ResumeDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("name", resume.getName());
-        sqlParameterSource.addValue("categoryId", resume.getCategoryId());
-        sqlParameterSource.addValue("applicantId", resume.getApplicantId());
+        sqlParameterSource.addValue("categoryId", resume.getCategory());
+        sqlParameterSource.addValue("applicantId", resume.getApplicant());
         sqlParameterSource.addValue("salary", resume.getSalary());
         sqlParameterSource.addValue("createdDate", resume.getCreateDate());
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);

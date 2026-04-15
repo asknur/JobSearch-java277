@@ -22,15 +22,13 @@ public class ResumeDto {
     private LocalDateTime updateTime;
     private LocalDateTime createDate;
 
-
     private boolean isActive;
-
 
     private float salary;
 
     @NotNull
     @Min(1)
-    private Long categoryId;
+    private Category categoryId;
 
     @NotBlank
     @Size(min = 1,  max = 20, message = "Should be name of resume")
@@ -38,7 +36,7 @@ public class ResumeDto {
 
     @NotNull
     @Min(1)
-    private Long applicantId;
+    private User applicantId;
 
     @NotNull
     @Min(1)
