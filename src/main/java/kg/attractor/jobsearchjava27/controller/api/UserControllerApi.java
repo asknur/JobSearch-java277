@@ -13,7 +13,7 @@ public class UserControllerApi {
     private final UserServiceImpl userService;
 
     @GetMapping("/user/{id}")
-    public UserDto getUser(@PathVariable int id) throws UserNotFoundException {
+    public UserDto getUser(@PathVariable Long id) throws UserNotFoundException {
         return userService.getUserById(id);
     }
 
