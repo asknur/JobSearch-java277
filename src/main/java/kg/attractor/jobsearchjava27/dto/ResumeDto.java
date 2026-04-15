@@ -22,9 +22,7 @@ public class ResumeDto {
     private LocalDateTime updateTime;
     private LocalDateTime createDate;
 
-
     private boolean isActive;
-
 
     private float salary;
 
