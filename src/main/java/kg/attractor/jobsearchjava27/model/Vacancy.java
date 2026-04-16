@@ -19,36 +19,36 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "update_time")
-    private LocalDateTime updateTime;
-
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User authorId;
-
-    @Column(name = "is_active")
-    private boolean isActive;
-
-    @Column(name = "exp_to")
-    private Integer expTo;
-
-    @Column(name = "exp_from")
-    private Integer expFrom;
-
-    @Column(name = "salary")
-    private float salary;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category categoryId;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "salary")
+    private Float salary;
+
+    @Column(name = "exp_from")
+    private Integer expFrom;
+
+    @Column(name = "exp_to")
+    private Integer expTo;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
+    @Column(name = "update_time")
+    private LocalDateTime updateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;      // ← было categoryId
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
 
 }
