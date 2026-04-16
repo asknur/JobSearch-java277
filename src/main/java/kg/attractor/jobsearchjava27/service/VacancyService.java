@@ -14,15 +14,17 @@ public interface VacancyService {
 
     VacancyDto findById(Long id) throws VacancyNotFoundException;
 
-    void deleteById(int id);
+    void deleteById(Long id);
 
     List<VacancyDto> getAllVacancies();
 
     List<VacancyDto> getRespondedVacancies(Long applicantId);
 
-    List<Vacancy> getVacanciesByCategoryId(int id);
+    List<VacancyDto> getVacanciesByCategoryId(Long id);
 
-    List<User> getApplicantsByVacancyId(int id);
+    List<User> getApplicantsByVacancyId(Long id);
 
     List<VacancyDto> getVacanciesByAuthorId(Long authorId);
+
+    List<VacancyDto> getAllActiveVacancies();
 }
