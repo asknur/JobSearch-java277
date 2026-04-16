@@ -28,7 +28,7 @@ public class VacancyControllerApi {
 //    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Vacancy> deleteVacancy(@PathVariable int id) {
+    public ResponseEntity<Vacancy> deleteVacancy(@PathVariable Long id) {
         vacancyService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -39,7 +39,7 @@ public class VacancyControllerApi {
 //    }
 
     @GetMapping("/category/{id}")
-    public ResponseEntity<List<Vacancy>> getVacanciesByCategory(@PathVariable int id) {
+    public ResponseEntity<List<VacancyDto>> getVacanciesByCategory(@PathVariable Long id) {
         return new ResponseEntity<>(vacancyService.getVacanciesByCategoryId(id), HttpStatus.OK);
     }
 }
