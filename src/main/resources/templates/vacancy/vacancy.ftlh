@@ -1,31 +1,48 @@
 <#import "../layout.ftlh" as main>
 <@main.layout>
-    <h2 class="mb-4">Вакансии</h2>
-    <div class="row">
-        <#list vacancy as vac>
-            <div class="col-md-4 mb-3">
-                <div class="card p-3">
-                    <h5>${vac.name}</h5>
-                    <p>${vac.description}</p>
-                    <p>
-                        <#if vac.salary??>
-                            Зарплата: $${vac.salary?string["#,##0.00"]} <br>
-                        </#if>
-
-                        Статус:
-                        <#if vac.active>
-                            <span class="badge bg-success">Активная</span>
-                        <#else>
-                            <span class="badge bg-secondary">Неактивная</span>
-                        </#if> <br>
-
-                        <#if vac.createdTime??>
-                            Дата публикации: ${vac.createdTime} <br>
-                        </#if>
-                    </p>
-                    <a href="vacancy/${vac.id}" class="btn btn-primary">Подробнее</a>
-                </div>
+    <div class="container mt-4">
+        <h2 class="mb-4">Вакансии</h2>
+        <#if vacancy?size == 0>
+            <div class="alert alert-info">
+                Вакансий пока нет
             </div>
-        </#list>
+        <#else>
+            <#list vacancy as vac>
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title mb-2">
+                                ${vac.name}
+                            </h5>
+                            <#if vac.active>
+                                <span class="badge bg-success">Активная</span>
+                            <#else>
+                                <span class="badge bg-secondary">Неактивная</span>
+                            </#if>
+                        </div>
+                        <p class="card-text text-muted">
+                            ${vac.description}
+                        </p>
+                        <div class="mb-2">
+                            <#if vac.salary??>
+                                <div>
+                                    <strong>Зарплата:</strong>
+                                    $${vac.salary?string["#,##0.00"]}
+                                </div>
+                            </#if>
+                            <#if vac.createdTime??>
+                                <div>
+                                    <strong>Дата публикации:</strong>
+                                    ${vac.updatedTime?string("dd.MM.yyyy HH:mm")}
+                                </div>
+                            </#if>
+                        </div>
+                        <a href="/vacancy/${vac.id}" class="btn btn-primary btn-sm">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+            </#list>
+        </#if>
     </div>
 </@main.layout>
