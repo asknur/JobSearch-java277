@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(UserDto user) {
         log.info("Logging user: {}", user);
-        User foundUser = userDao.getByEmail(user.getEmail())
+        User foundUser = userRepository.getByEmail(user.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!encoder.matches(user.getPassword(), foundUser.getPassword())) {
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers() {
-        List<User> users = userDao.getAllUsers();
+        List<User> users = userRepository.findAll();
         List<UserDto> result = new ArrayList<>();
 
         users.forEach(e -> {
@@ -67,8 +67,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) throws UserNotFoundException {
-//        User user = userDao.findById((long) id)
-//                .orElseThrow(UserNotFoundException::new);
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
@@ -85,7 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByName(String name) throws UserNotFoundException {
-        User user = userDao.getByName(name)
+        User user = userRepository.getByName(name)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
                 .email(user.getEmail())
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByPhone(String phone) throws UserNotFoundException{
-        User user = userDao.getByPhone(phone)
+        User user = userRepository.getByPhoneNumber(phone)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
                 .email(user.getEmail())
@@ -115,7 +113,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) throws UserNotFoundException {
-        User user = userDao.getByEmail(email)
+        User user = userRepository.getByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
                 .id(user.getId())
@@ -131,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean getUserByExistEmail(String email) {
-        return userDao.existsByEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
     @Override
