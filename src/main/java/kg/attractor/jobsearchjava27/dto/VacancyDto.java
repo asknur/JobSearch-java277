@@ -21,13 +21,13 @@ import java.time.LocalDateTime;
 public class VacancyDto {
     private int respondedCount;
 
-
     private LocalDateTime updateTime;
+
     private LocalDateTime createdDate;
 
     @NotNull
     @Min(1)
-    private User authorId;
+    private Long authorId;
 
     @NotNull
     private boolean isActive;
@@ -42,7 +42,7 @@ public class VacancyDto {
     private float salary;
 
     @NotNull
-    private Category categoryId;
+    private Long categoryId;
 
     @NotBlank
     @Size(min = 1, max = 100)

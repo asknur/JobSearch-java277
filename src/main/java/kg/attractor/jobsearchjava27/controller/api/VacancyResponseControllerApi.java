@@ -22,7 +22,7 @@ public class VacancyResponseControllerApi {
 //    }
 
     @GetMapping("/{id}/applicants")
-    public ResponseEntity<List<User>> getApplicants(@PathVariable int id) {
+    public ResponseEntity<List<User>> getApplicants(@PathVariable Long id) {
         return new ResponseEntity<>(vacancyService.getApplicantsByVacancyId(id), HttpStatus.OK);
     }
 }

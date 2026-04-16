@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
     private final VacancyService vacancyService;
 
-    @GetMapping
-    public String showInfo(Model model) {
-        model.addAttribute("vacancy", vacancyService.getAllVacancies());
-        return "vacancy";
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("vacancy", vacancyService.getAllActiveVacancies());
+        return "index";
     }
 
 
