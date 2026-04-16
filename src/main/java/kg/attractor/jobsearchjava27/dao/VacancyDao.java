@@ -79,7 +79,7 @@ public class VacancyDao {
         jdbcTemplate.update(sql,
                 vacancy.getName(),
                 vacancy.getDescription(),
-                vacancy.getCategoryId(),
+//                vacancy.getCategoryId(),
                 vacancy.getSalary(),
                 vacancy.getExpFrom(),
                 vacancy.getExpTo(),
@@ -96,11 +96,11 @@ public class VacancyDao {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("name", vacancy.getName());
         sqlParameterSource.addValue("description", vacancy.getDescription());
-        sqlParameterSource.addValue("category_id", vacancy.getCategoryId());
+//        sqlParameterSource.addValue("category_id", vacancy.getCategoryId());
         sqlParameterSource.addValue("salary", vacancy.getSalary());
         sqlParameterSource.addValue("exp_from", vacancy.getExpFrom());
         sqlParameterSource.addValue("exp_to", vacancy.getExpTo());
-        sqlParameterSource.addValue("author_id", vacancy.getAuthorId());
+//        sqlParameterSource.addValue("author_id", vacancy.getAuthorId());
         sqlParameterSource.addValue("created_date", vacancy.getCreatedDate());
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         vacancy.setId((long) keyHolder.getKey().intValue());
