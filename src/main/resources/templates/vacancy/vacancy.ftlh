@@ -14,7 +14,7 @@
                             <h5 class="card-title mb-2">
                                 ${vac.name}
                             </h5>
-                            <#if vac.active>
+                            <#if vac.isActive>
                                 <span class="badge bg-success">Активная</span>
                             <#else>
                                 <span class="badge bg-secondary">Неактивная</span>
@@ -30,11 +30,8 @@
                                     $${vac.salary?string["#,##0.00"]}
                                 </div>
                             </#if>
-                            <#if vac.createdTime??>
-                                <div>
-                                    <strong>Дата публикации:</strong>
-                                    ${vac.updatedTime?string("dd.MM.yyyy HH:mm")}
-                                </div>
+                            <#if vac.createdDate??>
+                                Дата публикации: ${vac.createdDate} <br>
                             </#if>
                         </div>
                         <a href="/vacancy/${vac.id}" class="btn btn-primary btn-sm">

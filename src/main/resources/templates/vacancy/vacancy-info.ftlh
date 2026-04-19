@@ -9,7 +9,7 @@
                 <strong>Зарплата:</strong> $${vacancy.salary?string["#,##0.00"]} USD <br>
                 <strong>Опыт:</strong> от ${vacancy.expFrom} до ${vacancy.expTo} лет <br>
                 <strong>Статус:</strong>
-                <#if vacancy.active>
+                <#if vacancy.isActive>
                     <span class="badge bg-success">Активная</span>
                 <#else>
                     <span class="badge bg-secondary">Неактивная</span>
@@ -23,6 +23,7 @@
                 </#if>
             </p>
             <hr>
+            <a href="/vacancy/edit/${vacancy.id}" class="btn btn-outline-primary">Редактировать</a>
             <a href="/vacancy" class="btn btn-outline-primary">Назад к списку вакансий</a>
         </div>
     </div>
