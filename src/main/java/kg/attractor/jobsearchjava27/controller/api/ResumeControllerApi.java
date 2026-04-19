@@ -19,7 +19,7 @@ public class ResumeControllerApi {
 
     @PostMapping
     public void createResume(@RequestBody @Valid ResumeDto resumeDto) {
-        resumeService.create(resumeDto);
+        resumeService.update(resumeDto);
     }
 
     @PutMapping("/update/{id}")
@@ -29,7 +29,7 @@ public class ResumeControllerApi {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteResume(@PathVariable int id) {
+    public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
         resumeService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -40,7 +40,7 @@ public class ResumeControllerApi {
     }
 
     @GetMapping("/category/{id}")
-    public ResumeDto getResumesByCategoryId(@PathVariable int id) throws ResumeNotFoundException {
+    public List<ResumeDto> getResumesByCategoryId(@PathVariable Long id) throws ResumeNotFoundException {
         return resumeService.getResumeByCategoryId(id);
     }
 

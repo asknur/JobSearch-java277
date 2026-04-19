@@ -17,7 +17,7 @@ public class AuthControllerApi {
 
     @PostMapping("/register")
     public void register(@Valid UserDto userDto) throws UserDataCreateException {
-        userService.create(userDto);
+        userService.save(userDto);
     }
 
     @PostMapping("/login")

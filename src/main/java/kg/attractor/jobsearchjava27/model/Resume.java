@@ -27,7 +27,7 @@ public class Resume {
     private LocalDateTime createDate;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "salary")
     private float salary;

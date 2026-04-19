@@ -14,7 +14,8 @@
                         </h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="${(user.avatar)!"default.png"}" class="rounded-circle mb-3" width="120" height="120" alt="user.name">
+                        <img src="${(user.avatar)!"default.png"}" class="rounded-circle mb-3" width="120" height="120"
+                             alt="user.name">
                         <h4>${user.surname} ${user.name}</h4>
                         <p class="text-muted">${user.email}</p>
                         <p><strong>Возраст:</strong> ${user.age}</p>
@@ -56,6 +57,8 @@
                                             ${resume.name}
                                             <span class="badge bg-success">${resume.name}</span>
                                         </li>
+                                        <a href="/resume/edit/${resume.id}" class="btn btn-outline-success">
+                                            Редактировать</a>
                                     </#list>
                                 </ul>
                             <#else>
@@ -64,7 +67,8 @@
                             <#if user.accountType == "APPLICANT">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h6 class="mb-0">Мои резюме</h6>
-                                    <a href="/resume/create" class="btn btn-sm btn-success rounded-pill">+ Создать резюме</a>
+                                    <a href="/resume/create" class="btn btn-sm btn-success rounded-pill">+ Создать
+                                        резюме</a>
                                 </div>
                             </#if>
 
@@ -83,7 +87,6 @@
                             </#if>
                         </#if>
 
-                        <!-- Для работодателя -->
                         <#if user.accountType == "EMPLOYER">
                             <h6 class="mb-3">Мои вакансии</h6>
                             <#if vacancies?has_content>
@@ -93,6 +96,10 @@
                                             ${vacancy.name}
                                             <span class="badge bg-secondary">${vacancy.respondedCount} откликов</span>
                                         </li>
+                                        <a href="/vacancy/edit/${vacancy.id}" class="btn btn-outline-success">
+                                            Редактировать</a>
+
+
                                     </#list>
                                 </ul>
                             <#else>
@@ -100,7 +107,8 @@
                             </#if>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h6 class="mb-0">Мои резюме</h6>
-                                <a href="/vacancy/create" class="btn btn-sm btn-success rounded-pill">+ Создать вакансию</a>
+                                <a href="/vacancy/create" class="btn btn-sm btn-success rounded-pill">+ Создать
+                                    вакансию</a>
                             </div>
 
                             <h6 class="mb-3">Отклики на вакансии</h6>

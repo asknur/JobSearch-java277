@@ -2,6 +2,7 @@ package kg.attractor.jobsearchjava27.service.impl;
 
 import kg.attractor.jobsearchjava27.dao.UserDao;
 import kg.attractor.jobsearchjava27.dto.UserDto;
+import kg.attractor.jobsearchjava27.dto.UserUpdateDto;
 import kg.attractor.jobsearchjava27.exception.UserDataCreateException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
@@ -11,22 +12,27 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
     @Override
     public String login(UserDto user) {
         log.info("Logging user: {}", user);
-        User foundUser = userRepository.getByEmail(user.getEmail())
+        User foundUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!encoder.matches(user.getPassword(), foundUser.getPassword())) {
@@ -36,18 +42,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserDto userDto){
+    public User save(UserDto userDto) {
         log.info("Saving user: {}", userDto);
         User user = new User();
         user.setPassword(encoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());
+        user.setAge(userDto.getAge());
         user.setAccountType(userDto.getAccountType());
-        user.setPhoneNumber(String.valueOf(userDto.getPhoneNumber()));
-        userDao.create(user);
-        return user;
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setEnabled(true);
+        return userRepository.save(user);
     }
+
+    @Override
+    public void update(UserUpdateDto dto, String currentEmail) {
+        User user = userRepository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setAge(dto.getAge());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        userRepository.save(user);
+    }
+
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -97,7 +116,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByPhone(String phone) throws UserNotFoundException{
+    public UserDto getUserByPhone(String phone) throws UserNotFoundException {
         User user = userRepository.getByPhoneNumber(phone)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
@@ -113,17 +132,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) throws UserNotFoundException {
-        User user = userRepository.getByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .name(user.getName())
-                .accountType(user.getAccountType())
-                .phoneNumber(user.getPhoneNumber())
-                .age(user.getAge())
                 .surname(user.getSurname())
+                .age(user.getAge())
+                .phoneNumber(user.getPhoneNumber())
+                .accountType(user.getAccountType())
+                .avatar(user.getAvatar())
                 .build();
     }
 
@@ -133,11 +152,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(UserDto userDto) throws UserDataCreateException {
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setName(userDto.getName());
-        user.setPassword(userDto.getPassword());
-        userDao.create(user);
+    public void updateAvatar(MultipartFile file, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path path = Paths.get("uploads/avatars/" + filename);
+        try {
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save avatar", e);
+        }
+        user.setAvatar(filename);
+        userRepository.save(user);
     }
 }

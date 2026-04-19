@@ -19,40 +19,34 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class VacancyDto {
-    private int respondedCount;
+    private Long id;
 
-    private LocalDateTime updateTime;
-
-    private LocalDateTime createdDate;
-
-    @NotNull
-    @Min(1)
-    private Long authorId;
-
-    @NotNull
-    private boolean isActive;
-
-    @NotNull
-    private Integer expTo;
-
-    @NotNull
-    private Integer expFrom;
-
-    @NotNull
-    private float salary;
-
-    @NotNull
-    private Long categoryId;
-
-    @NotBlank
-    @Size(min = 1, max = 100)
-    private String description;
-
-    @NotBlank
+    @NotBlank(message = "Name cant be empty")
     @Size(min = 1, max = 100)
     private String name;
 
-    @NotNull
-    @Min(1)
-    private Long id;
+    @NotBlank(message = "Description cant be empty")
+    @Size(min = 1, max = 255)
+    private String description;
+
+    @NotNull(message = "Enter salary")
+    @Min(value = 0, message = "Salary cant be negative")
+    private Float salary;
+
+    @NotNull(message = "Enter category")
+    private Long categoryId;
+
+    private Long authorId;
+
+    @Min(value = 0)
+    private Integer expFrom;
+
+    @Min(value = 0)
+    private Integer expTo;
+
+    private Boolean isActive;
+
+    private LocalDateTime createdDate;
+    private LocalDateTime updateTime;
+    private int respondedCount;
 }

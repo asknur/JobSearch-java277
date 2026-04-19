@@ -3,116 +3,130 @@ package kg.attractor.jobsearchjava27.service.impl;
 import kg.attractor.jobsearchjava27.dao.ResumeDao;
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
 import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
+import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
+import kg.attractor.jobsearchjava27.model.Category;
 import kg.attractor.jobsearchjava27.model.Resume;
+import kg.attractor.jobsearchjava27.model.User;
+import kg.attractor.jobsearchjava27.repository.CategoryRepository;
+import kg.attractor.jobsearchjava27.repository.ResumeRepository;
+import kg.attractor.jobsearchjava27.repository.UserRepository;
 import kg.attractor.jobsearchjava27.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
-    private final ResumeDao resumeDao;
+    private final CategoryRepository  categoryRepository;
+    private final UserRepository userRepository;
+    private final ResumeRepository resumeRepository;
 
     @Override
-    public void create(ResumeDto res) {
+    public void create(ResumeDto res, String applicantEmail) {
+        Category category = categoryRepository.findById(res.getCategoryId())
+                .orElseThrow(ResumeNotFoundException::new);
+
+        User user = userRepository.findByEmail(applicantEmail)
+                .orElseThrow(UserNotFoundException::new);
+
         Resume resume = Resume.builder()
                 .name(res.getName())
-                .category(res.getCategoryId())
-                .applicant(res.getApplicantId())
                 .salary(res.getSalary())
-                .createDate(res.getCreateDate())
-                .isActive(res.isActive())
+                .isActive(res.getIsActive())
+                .createDate(LocalDateTime.now())
+                .updateTime(res.getUpdateTime())
+                .category(category)
+                .applicant(user)
                 .build();
-        resumeDao.createResume(resume);
+        resumeRepository.save(resume);
     }
 
     @Override
     public ResumeDto update(ResumeDto res) throws ResumeNotFoundException {
-        Resume resume = resumeDao.getResumeById((long) Math.toIntExact(res.getId()))
+        Resume resume = resumeRepository.findById(res.getId())
                 .orElseThrow(ResumeNotFoundException::new);
+
+        Category category = categoryRepository.findById(res.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
         resume.setName(res.getName());
-        resume.setCategory(res.getCategoryId());
-        resume.setApplicant(res.getApplicantId());
         resume.setSalary(res.getSalary());
-        resume.setUpdateTime(res.getUpdateTime());
-        resumeDao.updateResume(resume);
+        resume.setIsActive(res.getIsActive());
+        resume.setCategory(category);
+        resume.setUpdateTime(LocalDateTime.now());
+
+        resumeRepository.save(resume);
         return res;
     }
 
     @Override
-    public ResumeDto findById(Long id) throws ResumeNotFoundException{
-        Resume resume = resumeDao.getResumeById(id)
-                .orElseThrow(ResumeNotFoundException::new);
-        return ResumeDto.builder()
-                .name(resume.getName())
-                .applicantId(resume.getApplicant())
-                .salary(resume.getSalary())
-                .name(resume.getName())
-                .updateTime(resume.getUpdateTime())
-                .createDate(resume.getCreateDate())
-                .categoryId(resume.getCategory())
-                .isActive(resume.isActive())
-                .build();
+    public List<ResumeDto> getResumesForUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if ("EMPLOYER".equals(user.getAccountType())) {
+            return resumeRepository.findByIsActiveTrue().stream().map(this::toDto).toList();
+        }
+        return resumeRepository.findByApplicantId(user.getId()).stream().map(this::toDto).toList();
     }
 
     @Override
-    public void deleteById(int id) {
-        resumeDao.deleteResume(id);
+    public ResumeDto findById(Long id) throws ResumeNotFoundException{
+        Resume resume = resumeRepository.findById(id)
+                .orElseThrow(ResumeNotFoundException::new);
+        return toDto(resume);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        resumeRepository.deleteById(id);
     }
 
     @Override
     public List<ResumeDto> getAllResume() {
-        List<Resume> resumes = resumeDao.getAllResume();
-        List<ResumeDto> result = new ArrayList<>();
-
-        resumes.forEach(e -> {
-            ResumeDto resumeDto = ResumeDto.builder()
-                    .id(e.getId())
-                    .applicantId(e.getApplicant())
-                    .salary(e.getSalary())
-                    .name(e.getName())
-                    .updateTime(e.getUpdateTime())
-                    .createDate(e.getCreateDate())
-                    .categoryId(e.getCategory())
-                    .isActive(e.isActive())
-                    .build();
-            result.add(resumeDto);
-        });
-        return result;
+        return resumeRepository.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
-    public ResumeDto getResumeByCategoryId(int id) throws ResumeNotFoundException{
-        Resume resume = resumeDao.getResumeByCategoryId(id)
-                .orElseThrow(ResumeNotFoundException::new);
-        return ResumeDto.builder()
-                .applicantId(resume.getApplicant())
-                .name(resume.getName())
-                .categoryId(resume.getCategory())
-                .salary(resume.getSalary())
-                .isActive(resume.isActive())
-                .createDate(resume.getCreateDate())
-                .updateTime(resume.getUpdateTime())
-                .build();
+    public List<ResumeDto> getAllActiveResume(){
+        return resumeRepository.findByIsActiveTrue()
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<ResumeDto> getResumeByCategoryId(Long id) throws ResumeNotFoundException{
+        return resumeRepository.findByCategoryId(id)
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
     public List<ResumeDto> getResumesByApplicantId(Long id) {
-        return resumeDao.getResumesByApplicantId(id)
+        return resumeRepository.findByApplicantId(id)
                 .stream()
-                .map(r -> ResumeDto.builder()
-                        .id(r.getId())
-                        .name(r.getName())
-                        .salary(r.getSalary())
-                        .categoryId(r.getCategory())
-                        .isActive(r.isActive())
-                        .createDate(r.getCreateDate())
-                        .updateTime(r.getUpdateTime())
-                        .build())
+                .map(this::toDto)
                 .toList();
+    }
+
+    private ResumeDto toDto(Resume r) {
+        return ResumeDto.builder()
+                .id(r.getId())
+                .name(r.getName())
+                .salary(r.getSalary())
+                .isActive(r.getIsActive())
+                .createdDate(r.getCreateDate())
+                .updateTime(r.getUpdateTime())
+                .categoryId(r.getCategory().getId())
+                .applicantId(r.getApplicant().getId())
+                .build();
     }
 
 }

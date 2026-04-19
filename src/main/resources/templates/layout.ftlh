@@ -49,7 +49,6 @@
         </form>
     </nav>
 
-
     <div class="container">
         <#nested>
     </div>

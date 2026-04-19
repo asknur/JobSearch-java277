@@ -10,13 +10,14 @@
                     <strong>Дата публикации:</strong> ${resume.createDate} <br>
                 </#if>
                 <strong>Статус:</strong>
-                <#if resume.active>
+                <#if resume.isActive>
                     <span class="badge bg-success">Активная</span>
                 <#else>
                     <span class="badge bg-secondary">Неактивная</span>
                 </#if>
             </p>
             <hr>
+            <a href="/resume/edit/${resume.id}" class="btn btn-outline-primary">Редактировать</a>
             <a href="/resume" class="btn btn-outline-primary">Назад к списку</a>
         </div>
     </div>
