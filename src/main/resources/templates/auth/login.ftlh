@@ -40,8 +40,12 @@
                         </div>
                         <!-- Submit button -->
                         <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-block mb-4">Sign in
+                                class="btn btn-primary btn-block mb-4">Войти
                         </button>
+                        <div class="text-center">
+                            <p class="text-muted">Нет аккаунта?</p>
+                            <a href="/auth/register" class="btn btn-outline-secondary btn-block">Регистрация</a>
+                        </div>
                     </form>
 
                 </div>
