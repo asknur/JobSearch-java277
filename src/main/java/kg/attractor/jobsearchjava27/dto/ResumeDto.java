@@ -19,27 +19,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ResumeDto {
-    private LocalDateTime updateTime;
-    private LocalDateTime createDate;
+    private Long id;
 
-    private boolean isActive;
-
-    private float salary;
-
-    @NotNull
-    @Min(1)
-    private Category categoryId;
-
-    @NotBlank
-    @Size(min = 1,  max = 20, message = "Should be name of resume")
+    @NotBlank(message = "Name cant be empty")
     private String name;
 
-    @NotNull
-    @Min(1)
-    private User applicantId;
+    @NotNull(message = "Enter salary")
+    @Min(value = 0, message = "Salary cant be negative")
+    private Float salary;
 
-    @NotNull
-    @Min(1)
-    private Long id;
+    @NotNull(message = "Enter category")
+    private Long categoryId;
+
+    private Long applicantId;
+
+    private Boolean isActive;
+
+    private LocalDateTime createdDate;
+
+    private LocalDateTime updateTime;
 
 }
