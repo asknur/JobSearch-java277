@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CategoryDto {
+    private Long id;
+
     @NotBlank
     @Size(min = 1, max = 20, message = "Should be name")
     private String name;
