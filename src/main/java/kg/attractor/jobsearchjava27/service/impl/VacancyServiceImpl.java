@@ -20,17 +20,16 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
-    private final VacancyDao vacancyDao;
     private final VacancyRepository vacancyRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final RespondedApplicantRepository respondedApplicantRepository;
 
     @Override
-    public void create(VacancyDto vac) {
+    public void create(VacancyDto vac, String authorEmail) {
         Category category = categoryRepository.findById(vac.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-        User author = userRepository.findById(vac.getAuthorId())
+        User author = userRepository.findByEmail(authorEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Vacancy vacancy = Vacancy.builder()
@@ -112,16 +111,7 @@ public class VacancyServiceImpl implements VacancyService {
     public List<VacancyDto> getVacanciesByAuthorId(Long authorId) {
         return vacancyRepository.findByAuthorId(authorId)
                 .stream()
-                .map(v -> VacancyDto.builder()
-                        .id(v.getId())
-                        .name(v.getName())
-                        .description(v.getDescription())
-                        .salary(v.getSalary())
-                        .isActive(v.getIsActive())
-                        .expFrom(v.getExpFrom())
-                        .expTo(v.getExpTo())
-                        .respondedCount(vacancyDao.getRespondedCountByVacancyId(v.getId()))
-                        .build())
+                .map(this::toDto)
                 .toList();
     }
 

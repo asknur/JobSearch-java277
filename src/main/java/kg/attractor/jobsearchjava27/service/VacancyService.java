@@ -8,7 +8,7 @@ import kg.attractor.jobsearchjava27.model.Vacancy;
 import java.util.List;
 
 public interface VacancyService {
-    void create(VacancyDto vac);
+    void create(VacancyDto vac, String authorEmail);
 
     VacancyDto update(VacancyDto vac) throws VacancyNotFoundException;
 
