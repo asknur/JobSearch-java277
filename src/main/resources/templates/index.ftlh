@@ -13,14 +13,14 @@
                         </#if>
 
                         Статус:
-                        <#if vac.active>
+                        <#if vac.isActive?? && vac.isActive>
                             <span class="badge bg-success">Активная</span>
                         <#else>
                             <span class="badge bg-secondary">Неактивная</span>
                         </#if> <br>
 
-                        <#if vac.createdTime??>
-                            Дата публикации: ${vac.createdTime} <br>
+                        <#if vac.createdDate??>
+                            Дата публикации: ${vac.createdDate} <br>
                         </#if>
                     </p>
                     <a href="vacancy/${vac.id}" class="btn btn-primary">Подробнее</a>
