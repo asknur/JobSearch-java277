@@ -10,9 +10,15 @@ import java.util.List;
 
 @Repository
 public interface ResumeRepository extends JpaRepository<Resume, Long> {
+    List<Resume> findByApplicantId(Long applicantId);
+
     List<Resume> findByApplicant(User applicant);
 
     List<Resume> findByIsActiveTrue();
+
+    List<Resume> findByApplicantIdAndIsActiveTrue(Long applicantId);
+
+    List<Resume> findByCategoryId(Long categoryId);
 
     List<Resume> findByCategory(Category category);
 
