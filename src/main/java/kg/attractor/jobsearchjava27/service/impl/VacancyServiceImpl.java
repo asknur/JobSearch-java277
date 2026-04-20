@@ -1,6 +1,5 @@
 package kg.attractor.jobsearchjava27.service.impl;
 
-import kg.attractor.jobsearchjava27.dao.VacancyDao;
 import kg.attractor.jobsearchjava27.dto.VacancyDto;
 import kg.attractor.jobsearchjava27.exception.VacancyNotFoundException;
 import kg.attractor.jobsearchjava27.model.Category;
@@ -12,6 +11,10 @@ import kg.attractor.jobsearchjava27.repository.UserRepository;
 import kg.attractor.jobsearchjava27.repository.VacancyRepository;
 import kg.attractor.jobsearchjava27.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -138,6 +141,25 @@ public class VacancyServiceImpl implements VacancyService {
                 .authorId(v.getAuthor().getId())
                 .build();
     }
+
+    @Override
+    public Page<VacancyDto> getActiveVacanciesPage(int page, int count) {
+        Pageable pageable = PageRequest.of(page, count, Sort.by(Sort.Order.desc("createdDate")));
+        return vacancyRepository.findByIsActiveTrue(pageable).map(this::toDto);
+    }
+
+    @Override
+    public Page<VacancyDto> getVacanciesByAuthorPage(Long authorId, int page, int count) {
+        Pageable pageable = PageRequest.of(page, count, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return vacancyRepository.findByAuthorId(authorId, pageable).map(this::toDto);
+    }
+
+    @Override
+    public Page<VacancyDto> getRespondedVacanciesPage(Long applicantId, int page, int count) {
+        Pageable pageable = PageRequest.of(page, count);
+        return vacancyRepository.findRespondedVacanciesByApplicantId(applicantId, pageable).map(this::toDto);
+    }
+
 
 
 }

@@ -1,6 +1,5 @@
 package kg.attractor.jobsearchjava27.service.impl;
 
-import kg.attractor.jobsearchjava27.dao.ResumeDao;
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
 import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
@@ -12,6 +11,10 @@ import kg.attractor.jobsearchjava27.repository.ResumeRepository;
 import kg.attractor.jobsearchjava27.repository.UserRepository;
 import kg.attractor.jobsearchjava27.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -127,6 +130,29 @@ public class ResumeServiceImpl implements ResumeService {
                 .categoryId(r.getCategory().getId())
                 .applicantId(r.getApplicant().getId())
                 .build();
+    }
+
+    @Override
+    public Page<ResumeDto> getActiveResumesPage(int page, int count) {
+        Pageable pageable = PageRequest.of(page, count, Sort.by(Sort.Direction.DESC, "createDate"));
+        return resumeRepository.findByIsActiveTrue(pageable).map(this::toDto);
+    }
+
+    @Override
+    public Page<ResumeDto> getResumesByApplicantPage(Long applicantId, int page, int count) {
+        Pageable pageable = PageRequest.of(page, count, Sort.by(Sort.Direction.DESC, "createDate"));
+        return resumeRepository.findByApplicantId(applicantId, pageable).map(this::toDto);
+    }
+
+    @Override
+    public Page<ResumeDto> getResumesForUserPage(String email, int page, int size) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createDate")));
+        if ("EMPLOYER".equals(user.getAccountType())) {
+            return resumeRepository.findByIsActiveTrue(pageable).map(this::toDto);
+        }
+        return resumeRepository.findByApplicantId(user.getId(), pageable).map(this::toDto);
     }
 
 }
