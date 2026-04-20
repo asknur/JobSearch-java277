@@ -4,6 +4,7 @@ import kg.attractor.jobsearchjava27.dto.VacancyDto;
 import kg.attractor.jobsearchjava27.exception.VacancyNotFoundException;
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -27,4 +28,10 @@ public interface VacancyService {
     List<VacancyDto> getVacanciesByAuthorId(Long authorId);
 
     List<VacancyDto> getAllActiveVacancies();
+
+    Page<VacancyDto> getActiveVacanciesPage(int page, int count);
+
+    Page<VacancyDto> getVacanciesByAuthorPage(Long authorId, int page, int count);
+
+    Page<VacancyDto> getRespondedVacanciesPage(Long applicantId, int page, int count);
 }
