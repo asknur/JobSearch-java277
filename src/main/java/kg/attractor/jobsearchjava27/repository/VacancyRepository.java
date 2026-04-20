@@ -2,6 +2,8 @@ package kg.attractor.jobsearchjava27.repository;
 
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.model.Vacancy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,5 +28,15 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
     @Query("SELECT ra.vacancy FROM RespondedApplicant ra WHERE ra.resume.applicant.id = :applicantId")
     List<Vacancy> findRespondedVacanciesByApplicantId(@Param("applicantId") Long applicantId);
+
+
+    //pageable
+
+    Page<Vacancy> findByIsActiveTrue(Pageable pageable);
+
+    Page<Vacancy> findByAuthorId(Long authorId, Pageable pageable);
+
+    @Query("SELECT ra.vacancy FROM RespondedApplicant ra WHERE ra.resume.applicant.id = :applicantId")
+    Page<Vacancy> findRespondedVacanciesByApplicantId(@Param("applicantId") Long applicantId, Pageable pageable);
 
 }

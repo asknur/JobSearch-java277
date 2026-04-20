@@ -2,6 +2,7 @@ package kg.attractor.jobsearchjava27.service;
 
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
 import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -24,4 +25,10 @@ public interface ResumeService {
     List<ResumeDto> getResumeByCategoryId(Long category) throws ResumeNotFoundException;
 
     List<ResumeDto> getResumesByApplicantId(Long id) throws ResumeNotFoundException;
+
+    Page<ResumeDto> getActiveResumesPage(int page, int count);
+
+    Page<ResumeDto> getResumesByApplicantPage(Long applicantId, int page, int count);
+
+    Page<ResumeDto> getResumesForUserPage(String email, int page, int size);
 }
