@@ -9,6 +9,8 @@ import kg.attractor.jobsearchjava27.model.Category;
 import kg.attractor.jobsearchjava27.service.CategoryService;
 import kg.attractor.jobsearchjava27.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,8 +27,13 @@ public class VacancyController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public String listVacancies(Model model) {
-        model.addAttribute("vacancy", vacancyService.getAllActiveVacancies());
+    public String listVacancies(Model model,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "5") int size) {
+        Page<VacancyDto> vacancyPage = vacancyService.getActiveVacanciesPage(page, size);
+        model.addAttribute("vacancy", vacancyPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", vacancyPage.getTotalPages());
         return "vacancy/vacancy";
     }
 

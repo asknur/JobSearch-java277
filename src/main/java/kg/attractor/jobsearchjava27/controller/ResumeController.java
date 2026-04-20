@@ -6,7 +6,9 @@ import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 import kg.attractor.jobsearchjava27.model.Resume;
 import kg.attractor.jobsearchjava27.service.CategoryService;
 import kg.attractor.jobsearchjava27.service.ResumeService;
+import kg.attractor.jobsearchjava27.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,10 +23,16 @@ import java.util.List;
 public class ResumeController {
     private final ResumeService resumeService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     @GetMapping
-    public String listResumes(Model model, Principal principal) {
-        model.addAttribute("resumes", resumeService.getResumesForUser(principal.getName()));
+    public String listResumes(Model model, Principal principal,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "5") int size) {
+        Page<ResumeDto> resumePage = resumeService.getResumesForUserPage(principal.getName(), page, size);
+        model.addAttribute("resumes", resumePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", resumePage.getTotalPages());
         return "resume/resume";
     }
 

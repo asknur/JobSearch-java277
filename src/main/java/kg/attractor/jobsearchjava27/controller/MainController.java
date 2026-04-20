@@ -1,11 +1,14 @@
 package kg.attractor.jobsearchjava27.controller;
 
+import kg.attractor.jobsearchjava27.dto.VacancyDto;
 import kg.attractor.jobsearchjava27.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
@@ -14,10 +17,13 @@ public class MainController {
     private final VacancyService vacancyService;
 
     @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("vacancy", vacancyService.getAllActiveVacancies());
+    public String index(Model model,
+                        @RequestParam(defaultValue = "0") int page,
+                        @RequestParam(defaultValue = "5") int size) {
+        Page<VacancyDto> vacancyPage = vacancyService.getActiveVacanciesPage(page, size);
+        model.addAttribute("vacancy", vacancyPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", vacancyPage.getTotalPages());
         return "index";
     }
-
-
 }
