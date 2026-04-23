@@ -16,9 +16,9 @@
                     <div class="card-body text-center">
                         <img src="${(user.avatar)!"default.png"}" class="rounded-circle mb-3" width="120" height="120"
                              alt="user.name">
-                        <h4>${user.surname} ${user.name}</h4>
+                        <h4>${user.surname!'Не указано'} ${user.name}</h4>
                         <p class="text-muted">${user.email}</p>
-                        <p><strong>Возраст:</strong> ${user.age}</p>
+                        <p><strong>Возраст:</strong> ${user.age!}</p>
                         <p><strong>Телефон:</strong> ${user.phoneNumber!"Не указан"}</p>
 
                         <span class="badge bg-primary">${user.accountType}</span>
@@ -26,6 +26,12 @@
                         <div class="d-flex justify-content-center mt-3 gap-2">
                             <a href="/profile/edit" class="btn btn-outline-primary rounded-pill px-4">Редактировать</a>
                             <form action="/auth/logout" method="post">
+                                <#if _csrf??>
+                                    <input
+                                            type="hidden"
+                                            name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                            value="${(_csrf.token)!'csrf-token'}"/>
+                                </#if>
                                 <button type="submit" class="btn btn-outline-primary rounded-pill px-4" id="logout">
                                     Выйти
                                 </button>

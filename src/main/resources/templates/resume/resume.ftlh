@@ -2,10 +2,9 @@
 <@main.layout>
     <div class="container mt-4">
         <h2 class="mb-4">Резюме</h2>
-        <div class="row">
             <#list resumes as res>
-                <div class="col-md-4 mb-3">
-                    <div class="card p-3">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
                         <h5>${res.name}</h5>
                         <p>
                             <#if res.salary??>

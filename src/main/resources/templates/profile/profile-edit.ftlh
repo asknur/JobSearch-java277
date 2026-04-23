@@ -18,7 +18,13 @@
             <hr>
 
             <form method="post" action="/profile/edit">
-                <input type="hidden" name="_csrf" value="${(_csrf.token)!}">
+
+                <#if _csrf??>
+                    <input
+                            type="hidden"
+                            name="${(_csrf.parameterName)!'csrf-param-name'}"
+                            value="${(_csrf.token)!'csrf-token'}"/>
+                </#if>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Имя</label>
