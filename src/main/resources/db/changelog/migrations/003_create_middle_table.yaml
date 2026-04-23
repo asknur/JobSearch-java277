@@ -34,7 +34,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: usr_id
-                  type: varchar(100)
+                  type: bigint
                   constraints:
                     foreignKeyName: fk_usr_role
                     nullable: false
