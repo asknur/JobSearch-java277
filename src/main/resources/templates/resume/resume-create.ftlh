@@ -4,7 +4,12 @@
         <h2 class="mb-4">Создание резюме</h2>
         <div class="card p-4 shadow-sm">
             <form method="post" action="/resume/create">
-                <input type="hidden" name="_csrf" value="${(_csrf.token)!}">
+                <#if _csrf??>
+                    <input
+                            type="hidden"
+                            name="${(_csrf.parameterName)!'csrf-param-name'}"
+                            value="${(_csrf.token)!'csrf-token'}"/>
+                </#if>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Название резюме</label>

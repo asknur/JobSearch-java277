@@ -5,7 +5,9 @@ import kg.attractor.jobsearchjava27.dto.UserDto;
 import kg.attractor.jobsearchjava27.dto.UserUpdateDto;
 import kg.attractor.jobsearchjava27.exception.UserDataCreateException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
+import kg.attractor.jobsearchjava27.model.Role;
 import kg.attractor.jobsearchjava27.model.User;
+import kg.attractor.jobsearchjava27.repository.RoleRepository;
 import kg.attractor.jobsearchjava27.repository.UserRepository;
 import kg.attractor.jobsearchjava27.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
 
     @Override
@@ -44,6 +47,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserDto userDto) {
         log.info("Saving user: {}", userDto);
+
+        Role role = roleRepository.findByRoleName(userDto.getAccountType().toUpperCase())
+                .orElseThrow(() -> new RuntimeException("Role not found: " + userDto.getAccountType()));
         User user = new User();
         user.setPassword(encoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
@@ -53,6 +59,7 @@ public class UserServiceImpl implements UserService {
         user.setAccountType(userDto.getAccountType());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setEnabled(true);
+        user.setRoles(List.of(role));
         return userRepository.save(user);
     }
 
