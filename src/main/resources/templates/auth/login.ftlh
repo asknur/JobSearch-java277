@@ -53,7 +53,7 @@
                             <a href="/auth/register" class="btn btn-outline-secondary btn-block">Регистрация</a>
                         </div>
                     </form>
-
+                    <a href="/auth/forgot_password">Forgot password?</a>
                 </div>
             </div>
         </div>
