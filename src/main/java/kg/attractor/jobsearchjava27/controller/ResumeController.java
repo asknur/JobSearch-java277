@@ -53,6 +53,7 @@ public class ResumeController {
     public String createResume(@Valid @ModelAttribute ResumeDto resumeDto,
                                BindingResult bindingResult, Model model, Principal principal) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "resume/resume-create";
         }
@@ -71,6 +72,7 @@ public class ResumeController {
     public String edit(@Valid @ModelAttribute ResumeDto resumeDto,
                        BindingResult bindingResult, @PathVariable Long id, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "resume/resume-edit";
         }

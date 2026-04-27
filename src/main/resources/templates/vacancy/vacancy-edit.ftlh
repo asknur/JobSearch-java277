@@ -6,14 +6,10 @@
             <form method="post" action="/vacancy/edit/${vacancyDto.id}">
                 <#if _csrf??>
                     <input
-
                             type="hidden"
-
                             name="${(_csrf.parameterName)!'csrf-param-name'}"
-
                             value="${(_csrf.token)!'csrf-token'}"/>
                 </#if>
-
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Название</label>
@@ -40,15 +36,22 @@
                     <textarea name="description" class="form-control" rows="4">${vacancyDto.description!}</textarea>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Зарплата</label>
-                        <input type="number" name="salary" class="form-control" value="${vacancyDto.salary!}" min="0">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Опыт от</label>
-                        <input type="number" name="expFrom" class="form-control" value="${vacancyDto.expFrom!}" min="0">
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Зарплата</label>
+                    <input type="number" name="salary" class="form-control"
+                           value="<#if vacancyDto.salary??>${vacancyDto.salary?string["0.##"]}</#if>" min="0">
+                    <#if errors?? && errors.hasFieldErrors("salary")>
+                        <div class="text-danger">${errors.getFieldError("salary").defaultMessage}</div>
+                    </#if>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Опыт от</label>
+                    <input type="number" name="expFrom" class="form-control" value="${vacancyDto.expFrom!}" min="0">
+                    <#if errors?? && errors.hasFieldErrors("expFrom")>
+                        <div class="text-danger">${errors.getFieldError("expFrom").defaultMessage}</div>
+                    </#if>
+                </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Опыт до</label>
                         <input type="number" name="expTo" class="form-control" value="${vacancyDto.expTo!}" min="0">

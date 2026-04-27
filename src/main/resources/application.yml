@@ -19,6 +19,18 @@
     liquibase:
       change-log: classpath:/db/changelog/master.yaml
 
+    mail:
+      host: smtp.gmail.com
+      username: ${SMTP_USERNAME}
+      password: ${SMTP_PASSWORD}
+      port: 587
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+
     jpa:
       hibernate:
         ddl-auto: validate

@@ -29,9 +29,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .userDetailsService(authUserDetailsService)  // ← добавь
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .userDetailsService(authUserDetailsService)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
@@ -44,7 +43,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/", "/auth/login", "/auth/register", "/auth/forgot_password", "/auth/reset_password").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

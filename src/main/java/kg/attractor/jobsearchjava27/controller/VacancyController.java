@@ -29,11 +29,13 @@ public class VacancyController {
     @GetMapping
     public String listVacancies(Model model,
                                 @RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "5") int size) {
-        Page<VacancyDto> vacancyPage = vacancyService.getActiveVacanciesPage(page, size);
+                                @RequestParam(defaultValue = "5") int count,
+                                @RequestParam(defaultValue = "newest") String sort) {
+        Page<VacancyDto> vacancyPage = vacancyService.getActiveVacanciesPage(page, count, sort);
         model.addAttribute("vacancy", vacancyPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", vacancyPage.getTotalPages());
+        model.addAttribute("sort", sort);
         return "vacancy/vacancy";
     }
 
@@ -53,7 +55,13 @@ public class VacancyController {
     @PostMapping("/create")
     public String createVacancy(@Valid @ModelAttribute VacancyDto vacancyDto, BindingResult bindingResult,
                                 Model model, Principal principal) {
+        if (vacancyDto.getExpFrom() != null && vacancyDto.getExpTo() != null
+                && vacancyDto.getExpFrom() > vacancyDto.getExpTo()) {
+            bindingResult.rejectValue("expFrom", "error.expFrom", "Опыт 'от' не может быть больше опыта 'до'");
+        }
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "vacancy/vacancy-create";
         }
@@ -71,7 +79,13 @@ public class VacancyController {
     @PostMapping("/edit/{id}")
     public String update(@Valid @ModelAttribute VacancyDto vacancyDto, BindingResult errors,
                          @PathVariable Long id, Model model) throws VacancyNotFoundException {
+        if (vacancyDto.getExpFrom() != null && vacancyDto.getExpTo() != null
+                && vacancyDto.getExpFrom() > vacancyDto.getExpTo()) {
+            errors.rejectValue("expFrom", "error.expFrom", "Опыт 'от' не может быть больше опыта 'до'");
+        }
+
         if (errors.hasErrors()) {
+            model.addAttribute("errors", errors);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "vacancy/vacancy-edit";
         }

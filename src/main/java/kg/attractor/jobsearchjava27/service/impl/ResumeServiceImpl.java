@@ -55,7 +55,7 @@ public class ResumeServiceImpl implements ResumeService {
         Category category = categoryRepository.findById(res.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        resume.setName(res.getName());
+        resume.setName(res.getName() != null ? res.getName().trim() : null);
         resume.setSalary(res.getSalary());
         resume.setIsActive(res.getIsActive());
         resume.setCategory(category);

@@ -56,6 +56,8 @@ public class User implements UserDetails {
     )
     private List<Role> roles;
 
+    private String resetPasswordToken;
+
     //User details methods
 
     @Override

@@ -1,22 +1,12 @@
 <#import "../layout.ftlh" as main>
 <@main.layout>
-    <nav aria-label="Навигация по страницам">
-        <ul class="pagination justify-content-center mt-3">
-            <li class="page-item <#if currentPage == 0>disabled</#if>">
-                <a class="page-link" href="?page=${currentPage - 1}">Previous</a>
-            </li>
-
-            <#list 0..(totalPages - 1) as p>
-                <li class="page-item <#if p == currentPage>active</#if>">
-                    <a class="page-link" href="?page=${p}">${p + 1}</a>
-                </li>
-            </#list>
-
-            <li class="page-item <#if currentPage == totalPages - 1>disabled</#if>">
-                <a class="page-link" href="?page=${currentPage + 1}">Next</a>
-            </li>
-        </ul>
-    </nav>
+    <form method="get" action="/vacancy" class="d-flex gap-2 align-items-center mb-3">
+        <input type="hidden" name="page" value="0">
+        <select name="sort" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+            <option value="newest" <#if sort == "newest">selected</#if>>Сначала новые</option>
+            <option value="oldest" <#if sort == "oldest">selected</#if>>Сначала старые</option>
+        </select>
+    </form>
     <div class="container mt-4">
         <h2 class="mb-4">Вакансии</h2>
         <#if vacancy?size == 0>

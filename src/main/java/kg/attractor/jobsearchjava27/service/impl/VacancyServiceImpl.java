@@ -36,8 +36,8 @@ public class VacancyServiceImpl implements VacancyService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Vacancy vacancy = Vacancy.builder()
-                .name(vac.getName())
-                .description(vac.getDescription())
+                .name(vac.getName() != null ? vac.getName().trim() : null)
+                .description(vac.getDescription() != null ? vac.getDescription().trim() : null)
                 .salary(vac.getSalary())
                 .expFrom(vac.getExpFrom())
                 .expTo(vac.getExpTo())
@@ -57,8 +57,8 @@ public class VacancyServiceImpl implements VacancyService {
         Category category = categoryRepository.findById(vac.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        vacancy.setName(vac.getName());
-        vacancy.setDescription(vac.getDescription());
+        vacancy.setName(vac.getName() != null ? vac.getName().trim() : null);
+        vacancy.setDescription(vac.getDescription() != null ? vac.getDescription().trim() : null);
         vacancy.setSalary(vac.getSalary());
         vacancy.setExpFrom(vac.getExpFrom());
         vacancy.setExpTo(vac.getExpTo());
@@ -143,8 +143,11 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public Page<VacancyDto> getActiveVacanciesPage(int page, int count) {
-        Pageable pageable = PageRequest.of(page, count, Sort.by(Sort.Order.desc("createdDate")));
+    public Page<VacancyDto> getActiveVacanciesPage(int page, int count, String sort) {
+        Sort sorting = "oldest".equals(sort)
+                ? Sort.by(Sort.Order.asc("createdDate"))
+                : Sort.by(Sort.Order.desc("createdDate"));
+        Pageable pageable = PageRequest.of(page, count, sorting);
         return vacancyRepository.findByIsActiveTrue(pageable).map(this::toDto);
     }
 

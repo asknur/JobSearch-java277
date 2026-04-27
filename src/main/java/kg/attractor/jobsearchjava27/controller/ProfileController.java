@@ -6,11 +6,14 @@ import kg.attractor.jobsearchjava27.dto.UserDto;
 import kg.attractor.jobsearchjava27.dto.UserUpdateDto;
 import kg.attractor.jobsearchjava27.dto.VacancyDto;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
+import kg.attractor.jobsearchjava27.service.ImageService;
 import kg.attractor.jobsearchjava27.service.ResumeService;
 import kg.attractor.jobsearchjava27.service.UserService;
 import kg.attractor.jobsearchjava27.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +29,7 @@ public class ProfileController {
     private final UserService userService;
     private final ResumeService resumeService;
     private final VacancyService vacancyService;
+    private final ImageService imageService;
 
     @GetMapping
     public String profile(Model model, Principal principal,
@@ -61,6 +65,7 @@ public class ProfileController {
     public String updateProfile(@Valid @ModelAttribute UserUpdateDto userUpdateDto,
                                 BindingResult bindingResult, Model model, Principal principal) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult);
             model.addAttribute("userDto", userUpdateDto);
             return "profile/profile-edit";
         }
@@ -71,6 +76,13 @@ public class ProfileController {
     @PostMapping("/avatar")
     public String updateAvatar(@RequestParam MultipartFile avatar, Principal principal) throws UserNotFoundException {
         userService.updateAvatar(avatar, principal.getName());
+
         return "redirect:/profile";
+    }
+
+    @GetMapping("/avatars/{filename}")
+    @ResponseBody
+    public ResponseEntity<?> getAvatar(@PathVariable String filename) {
+        return imageService.getOutputFile(filename, "/avatars", MediaType.IMAGE_JPEG);
     }
 }

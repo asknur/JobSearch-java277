@@ -5,7 +5,12 @@
         <div class="card p-4 shadow-sm">
 
             <form method="post" action="/profile/avatar" enctype="multipart/form-data" class="mb-4">
-                <input type="hidden" name="_csrf" value="${(_csrf.token)!}">
+                <#if _csrf??>
+                    <input
+                            type="hidden"
+                            name="${(_csrf.parameterName)!'csrf-param-name'}"
+                            value="${(_csrf.token)!'csrf-token'}"/>
+                </#if>
                 <label class="form-label fw-bold">Сменить аватар</label>
                 <div class="d-flex align-items-center gap-3">
                     <img src="/avatars/${userDto.avatar!'default.png'}" class="rounded-circle"
