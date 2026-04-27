@@ -1,7 +1,7 @@
 package kg.attractor.jobsearchjava27.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kg.attractor.jobsearchjava27.exception.NotFoundEntryException;
+import kg.attractor.jobsearchjava27.exception.*;
 import kg.attractor.jobsearchjava27.service.ErrorService;
 import lombok.RequiredArgsConstructor;
 import org.h2.engine.Mode;
@@ -22,30 +22,57 @@ public class GlobalControllerAdvice {
     private final ErrorService errorService;
 
     @ExceptionHandler(NotFoundEntryException.class)
-    private String noSuchFileExceptionHandler(HttpServletRequest request , Model model, NotFoundEntryException e) {
+    public String notFoundHandler(HttpServletRequest request, Model model, NotFoundEntryException e) {
         model.addAttribute("status", HttpStatus.NOT_FOUND.value());
         model.addAttribute("reason", HttpStatus.NOT_FOUND.getReasonPhrase() + ": " + e.getMessage());
         model.addAttribute("details", request);
         return "errors/error";
     }
 
-    @ExceptionHandler(SQLException.class)
-    private String sqlExceptionHandler(HttpServletRequest request ,Model model, SQLException e) {
-        model.addAttribute("status", HttpStatus.BAD_REQUEST.value());
-        model.addAttribute("reason", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": " + e.getMessage());
+    @ExceptionHandler(VacancyNotFoundException.class)
+    public String vacancyNotFoundHandler(HttpServletRequest request, Model model, VacancyNotFoundException e) {
+        model.addAttribute("status", HttpStatus.NOT_FOUND.value());
+        model.addAttribute("reason", "Вакансия не найдена");
         model.addAttribute("details", request);
         return "errors/error";
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    private String validationHandler(HttpServletRequest request ,Model model ,MethodArgumentNotValidException e) {
-        String errors = e.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
-                .collect(Collectors.joining(", "));
+    @ExceptionHandler(ResumeNotFoundException.class)
+    public String resumeNotFoundHandler(HttpServletRequest request, Model model, ResumeNotFoundException e) {
+        model.addAttribute("status", HttpStatus.NOT_FOUND.value());
+        model.addAttribute("reason", "Резюме не найдено");
+        model.addAttribute("details", request);
+        return "errors/error";
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public String userNotFoundHandler(HttpServletRequest request, Model model, UserNotFoundException e) {
+        model.addAttribute("status", HttpStatus.NOT_FOUND.value());
+        model.addAttribute("reason", "Пользователь не найден");
+        model.addAttribute("details", request);
+        return "errors/error";
+    }
+
+    @ExceptionHandler(UserDataCreateException.class)
+    public String userDataCreateHandler(HttpServletRequest request, Model model, UserDataCreateException e) {
         model.addAttribute("status", HttpStatus.BAD_REQUEST.value());
-        model.addAttribute("reason", "Validation failed: " + errors);
+        model.addAttribute("reason", "Ошибка создания пользователя: " + e.getMessage());
+        model.addAttribute("details", request);
+        return "errors/error";
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public String sqlHandler(HttpServletRequest request, Model model, SQLException e) {
+        model.addAttribute("status", HttpStatus.BAD_REQUEST.value());
+        model.addAttribute("reason", "Ошибка базы данных: " + e.getMessage());
+        model.addAttribute("details", request);
+        return "errors/error";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String generalHandler(HttpServletRequest request, Model model, Exception e) {
+        model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        model.addAttribute("reason", "Внутренняя ошибка: " + e.getMessage());
         model.addAttribute("details", request);
         return "errors/error";
     }
