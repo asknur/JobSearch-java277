@@ -1,22 +1,30 @@
 package kg.attractor.jobsearchjava27.service.impl;
 
-import kg.attractor.jobsearchjava27.dao.UserDao;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import kg.attractor.jobsearchjava27.common.Utility;
 import kg.attractor.jobsearchjava27.dto.UserDto;
 import kg.attractor.jobsearchjava27.dto.UserUpdateDto;
-import kg.attractor.jobsearchjava27.exception.UserDataCreateException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
 import kg.attractor.jobsearchjava27.model.Role;
 import kg.attractor.jobsearchjava27.model.User;
 import kg.attractor.jobsearchjava27.repository.RoleRepository;
 import kg.attractor.jobsearchjava27.repository.UserRepository;
+import kg.attractor.jobsearchjava27.service.EmailService;
+import kg.attractor.jobsearchjava27.service.ImageService;
 import kg.attractor.jobsearchjava27.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,6 +39,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
+    private final EmailService emailService;
+    private final ImageService imageService;
+
 
     @Override
     public String login(UserDto user) {
@@ -161,16 +172,55 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateAvatar(MultipartFile file, String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        Path path = Paths.get("uploads/avatars/" + filename);
-        try {
-            Files.createDirectories(path.getParent());
-            Files.write(path, file.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save avatar", e);
-        }
+                .orElseThrow(UserNotFoundException::new);
+        String filename = imageService.saveUploadedFile(file, "/avatars");
         user.setAvatar(filename);
         userRepository.save(user);
     }
+
+    @Override
+    public Page<UserDto> getCompaniesByPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findByAccountType("EMPLOYER", pageable)
+                .map(user -> UserDto.builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .surname(user.getSurname())
+                        .email(user.getEmail())
+                        .phoneNumber(user.getPhoneNumber())
+                        .avatar(user.getAvatar())
+                        .accountType(user.getAccountType())
+                        .build());
+    }
+
+    private void updateResetPasswordToken(String token, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Could not find any user with the email " + email));
+        user.setResetPasswordToken(token);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public User getByResetPasswordToken(String token) {
+        return userRepository.findByResetPasswordToken(token)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public void updatePassword(User user, String newPassword) {
+        String encodedPassword = encoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        user.setResetPasswordToken(null);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void makeResetPasswdLink(HttpServletRequest request) throws UsernameNotFoundException, UnsupportedEncodingException, MessagingException {
+        String email = request.getParameter("email");
+        String token = UUID.randomUUID().toString();
+        updateResetPasswordToken(token, email);
+        String resetPasswordLink = Utility.getSiteURL(request) + "/auth/reset_password?token=" + token;
+        emailService.sendEmail(email, resetPasswordLink);
+    }
+
 }
