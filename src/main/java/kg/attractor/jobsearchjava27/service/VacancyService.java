@@ -29,7 +29,7 @@ public interface VacancyService {
 
     List<VacancyDto> getAllActiveVacancies();
 
-    Page<VacancyDto> getActiveVacanciesPage(int page, int count);
+    Page<VacancyDto> getActiveVacanciesPage(int page, int count, String sort);
 
     Page<VacancyDto> getVacanciesByAuthorPage(Long authorId, int page, int count);
 
