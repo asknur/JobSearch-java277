@@ -1,4 +1,5 @@
 <#import "../layout.ftlh" as layout>
+<#import "/spring.ftl" as spring>
 <@layout.layout>
 <section class=" text-center text-lg-start">
     <style>
@@ -36,24 +37,24 @@
 
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="email" id="form2Example1" class="form-control" name="username"/>
-                            <label class="form-label" for="form2Example1">Email address</label>
+                            <label class="form-label" for="form2Example1"><@spring.message 'auth.login.email'/></label>
                         </div>
 
 
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="password" id="form2Example2" class="form-control" name="password"/>
-                            <label class="form-label" for="form2Example2">Password</label>
+                            <label class="form-label" for="form2Example2"><@spring.message 'auth.login.password'/></label>
                         </div>
 
                         <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-block mb-4">Войти
+                                class="btn btn-primary btn-block mb-4"><@spring.message 'auth.login.submit'/>
                         </button>
                         <div class="text-center">
-                            <p class="text-muted">Нет аккаунта?</p>
-                            <a href="/auth/register" class="btn btn-outline-secondary btn-block">Регистрация</a>
+                            <p class="text-muted"><@spring.message 'auth.login.noAccount'/></p>
+                            <a href="/auth/register" class="btn btn-outline-secondary btn-block"><@spring.message 'auth.login.toRegister'/></a>
                         </div>
                     </form>
-                    <a href="/auth/forgot_password">Forgot password?</a>
+                    <a href="/auth/forgot_password"><@spring.message 'auth.login.forgot'/></a>
                 </div>
             </div>
         </div>

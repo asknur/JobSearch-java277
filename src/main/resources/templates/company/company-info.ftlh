@@ -1,4 +1,5 @@
 <#import "../layout.ftlh" as main>
+<#import "/spring.ftl" as spring>
 <@main.layout>
     <div class="container mt-4">
         <div class="card shadow-sm">
@@ -14,16 +15,16 @@
                 </#if>
                 <div>
                     <h3>${company.name}<#if company.surname??> ${company.surname}</#if></h3>
-                    <p class="mb-1"><strong>Email:</strong> ${company.email}</p>
+                    <p class="mb-1"><strong><@spring.message 'common.email'/></strong> ${company.email}</p>
                     <#if company.phoneNumber??>
-                        <p class="mb-1"><strong>Телефон:</strong> ${company.phoneNumber}</p>
+                        <p class="mb-1"><strong><@spring.message 'common.phone'/></strong> ${company.phoneNumber}</p>
                     </#if>
                     <#if company.age??>
-                        <p class="mb-1"><strong>Возраст:</strong> ${company.age}</p>
+                        <p class="mb-1"><strong><@spring.message 'common.age'/></strong> ${company.age}</p>
                     </#if>
                 </div>
             </div>
         </div>
-        <a href="/company" class="btn btn-secondary mt-3">← Назад к списку</a>
+        <a href="/company" class="btn btn-secondary mt-3"><@spring.message 'company.info.back'/></a>
     </div>
 </@main.layout>
