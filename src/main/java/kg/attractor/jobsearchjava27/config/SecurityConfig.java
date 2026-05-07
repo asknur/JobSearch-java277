@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,6 +26,7 @@ public class SecurityConfig {
 
     private final AuthUserDetailsServiceImpl authUserDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final @Lazy LocaleHandler localeHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,15 +35,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .formLogin(login -> login
                         .loginPage("/auth/login")
+                        .successHandler(localeHandler)
                         .loginProcessingUrl("/auth/login")
-                        .defaultSuccessUrl("/")
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(PathPatternRequestMatcher.withDefaults().matcher("/auth/logout"))
                         .permitAll())
                 .httpBasic(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/", "/auth/login", "/auth/register", "/auth/forgot_password", "/auth/reset_password").permitAll()
                         .anyRequest().authenticated()

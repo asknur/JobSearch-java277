@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <#macro layout>
     <!DOCTYPE html>
     <html lang="en">
@@ -19,7 +20,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="/vacancy">Вакансии</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/vacancy"><@spring.message 'layout.nav.vacancies'/></a>
+                    </li>
 
                     <#if SPRING_SECURITY_CONTEXT?? && SPRING_SECURITY_CONTEXT.authentication??>
                         <#assign auth = SPRING_SECURITY_CONTEXT.authentication>
@@ -34,39 +37,44 @@
                             </#list>
 
                             <#if isEmployer>
-                            <#-- Работодатель видит резюме -->
-                                <li class="nav-item"><a class="nav-link" href="/resume">Резюме</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/resume"><@spring.message 'layout.nav.resumes'/></a></li>
                             <#else>
-                            <#-- Соискатель видит компании -->
-                                <li class="nav-item"><a class="nav-link" href="/company">Компании</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/company"><@spring.message 'layout.nav.companies'/></a></li>
                             </#if>
-
-                            <li class="nav-item"><a class="nav-link" href="/profile">Профиль</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/profile"><@spring.message 'layout.nav.profile'/></a></li>
                         </#if>
                     </#if>
                 </ul>
 
                 <div class="d-flex align-items-center gap-2">
+
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Language switcher">
+                        <a href="?lang=ru"
+                           class="btn btn-outline-light <#if .locale?string?starts_with('ru')>active</#if>">RU</a>
+                        <a href="?lang=en"
+                           class="btn btn-outline-light <#if .locale?string?starts_with('en')>active</#if>">EN</a>
+                    </div>
+
                     <#if SPRING_SECURITY_CONTEXT?? && SPRING_SECURITY_CONTEXT.authentication??>
                         <#assign auth = SPRING_SECURITY_CONTEXT.authentication>
                         <#assign principal = auth.principal>
                         <#if principal?has_content && principal != "anonymousUser">
-                            <a href="/profile" class="text-light">Hello ${principal.username!"user"}</a>
+                            <a href="/profile" class="text-light"> <@spring.message 'layout.nav.greeting'/> ${principal.username!"user"}</a>
                             <form action="/auth/logout" method="post" class="d-inline">
                                 <#if _csrf??>
                                     <input type="hidden"
                                            name="${(_csrf.parameterName)!'csrf'}"
                                            value="${(_csrf.token)!''}"/>
                                 </#if>
-                                <button type="submit" class="btn btn-danger">Выйти</button>
+                                <button type="submit" class="btn btn-danger"><@spring.message 'layout.nav.logout'/></button>
                             </form>
                         <#else>
-                            <a href="/auth/login" class="btn btn-success">Войти</a>
-                            <a href="/auth/register" class="btn btn-info">Регистрация</a>
+                            <a href="/auth/login" class="btn btn-success"><@spring.message 'layout.nav.login'/></a>
+                            <a href="/auth/register" class="btn btn-info"><@spring.message 'layout.nav.register'/></a>
                         </#if>
                     <#else>
-                        <a href="/auth/login" class="btn btn-success">Войти</a>
-                        <a href="/auth/register" class="btn btn-info">Регистрация</a>
+                        <a href="/auth/login" class="btn btn-success"><@spring.message 'layout.nav.login'/></a>
+                        <a href="/auth/register" class="btn btn-info"><@spring.message 'layout.nav.register'/></a>
                     </#if>
                 </div>
             </div>

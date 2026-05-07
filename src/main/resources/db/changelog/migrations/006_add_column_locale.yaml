@@ -1,11 +1,11 @@
 databaseChangeLog:
   - changeSet:
-      id: change_user_table
+      id: change_user_table2
       author: Askar
       changes:
         - addColumn:
             tableName: usr
             columns:
               - column:
-                  name: reset_password_token
-                  type: varchar(255)
+                  name: locale
+                  type: varchar(15)

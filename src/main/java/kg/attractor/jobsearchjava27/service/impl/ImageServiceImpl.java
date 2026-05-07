@@ -58,15 +58,17 @@ public class ImageServiceImpl implements ImageService {
     @SneakyThrows
     public ResponseEntity<?> getOutputFile(String filename, String subDir, MediaType mediaType) {
         try {
-            byte[] image = Files.readAllBytes(Paths.get("/data" + subDir + "/" + filename));
+            Path path = Paths.get(UPLOADED_DIR + subDir + "/" + filename); // ← объяви переменную
+            log.info("Looking for file at: {}", path.toAbsolutePath());    // ← теперь работает
+            byte[] image = Files.readAllBytes(path);
             Resource resource = new ByteArrayResource(image);
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
                     .contentLength(resource.contentLength())
                     .contentType(mediaType)
                     .body(resource);
         } catch (NoSuchFileException e) {
-            e.printStackTrace();
+            log.error("File not found: {}", filename);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Image not found");
         }
     }

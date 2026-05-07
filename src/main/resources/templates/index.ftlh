@@ -1,6 +1,14 @@
+<#import 'spring.ftl' as spring>
 <#import "./layout.ftlh" as layout>
 <@layout.layout>
-    <h2 class="mb-4">Главная страница</h2>
+    <form method="get" action="/vacancy" class="d-flex gap-2 align-items-center mb-3">
+        <input type="hidden" name="page" value="0">
+        <select name="sort" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+            <option value="newest" <#if sort == "newest">selected</#if>><@spring.message 'vacancy.sort.newest'/></option>
+            <option value="oldest" <#if sort == "oldest">selected</#if>><@spring.message 'vacancy.sort.oldest'/></option>
+        </select>
+    </form>
+    <h2 class="mb-4"><@spring.message 'index.title'/></h2>
         <#list vacancy as vac>
             <div class="card mb-3 shadow-sm">
                 <div class="card-body">
@@ -9,9 +17,9 @@
                             ${vac.name}
                         </h5>
                         <#if vac.isActive>
-                            <span class="badge bg-success">Активная</span>
+                            <span class="badge bg-success"><@spring.message 'common.status.active'/></span>
                         <#else>
-                            <span class="badge bg-secondary">Неактивная</span>
+                            <span class="badge bg-secondary"><@spring.message 'common.status.inactive'/></span>
                         </#if>
                     </div>
                     <p class="card-text text-muted">
@@ -20,16 +28,16 @@
                     <div class="mb-2">
                         <#if vac.salary??>
                             <div>
-                                <strong>Зарплата:</strong>
+                                <strong><@spring.message 'common.salary'/></strong>
                                 $${vac.salary?string["#,##0.00"]}
                             </div>
                         </#if>
                         <#if vac.createdDate??>
-                            Дата публикации: ${vac.createdDate} <br>
+                            <@spring.message 'common.published'/> ${vac.createdDate} <br>
                         </#if>
                     </div>
                     <a href="/vacancy/${vac.id}" class="btn btn-primary btn-sm">
-                        Подробнее
+                        <@spring.message 'common.details'/>
                     </a>
                 </div>
             </div>
@@ -38,7 +46,7 @@
     <nav aria-label="...">
         <ul class="pagination justify-content-center mt-3">
             <li class="page-item <#if currentPage == 0>disabled</#if>">
-                <a class="page-link" href="?page=${currentPage - 1}">Previous</a>
+                <a class="page-link" href="?page=${currentPage - 1}"><@spring.message 'common.previous'/></a>
             </li>
             <#list 0..(totalPages - 1) as p>
                 <li class="page-item <#if p == currentPage>active</#if>">
@@ -46,7 +54,7 @@
                 </li>
             </#list>
             <li class="page-item <#if currentPage == totalPages - 1>disabled</#if>">
-                <a class="page-link" href="?page=${currentPage + 1}">Next</a>
+                <a class="page-link" href="?page=${currentPage + 1}"><@spring.message 'common.next'/></a>
             </li>
         </ul>
     </nav>

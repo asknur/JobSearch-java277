@@ -11,6 +11,7 @@ import kg.attractor.jobsearchjava27.service.ResumeService;
 import kg.attractor.jobsearchjava27.service.UserService;
 import kg.attractor.jobsearchjava27.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
+@Slf4j
 @Controller
 @RequestMapping("/profile")
 @RequiredArgsConstructor
@@ -76,13 +78,13 @@ public class ProfileController {
     @PostMapping("/avatar")
     public String updateAvatar(@RequestParam MultipartFile avatar, Principal principal) throws UserNotFoundException {
         userService.updateAvatar(avatar, principal.getName());
-
         return "redirect:/profile";
     }
 
     @GetMapping("/avatars/{filename}")
     @ResponseBody
     public ResponseEntity<?> getAvatar(@PathVariable String filename) {
+        log.info("Getting avatar: {}", filename);
         return imageService.getOutputFile(filename, "/avatars", MediaType.IMAGE_JPEG);
     }
 }
