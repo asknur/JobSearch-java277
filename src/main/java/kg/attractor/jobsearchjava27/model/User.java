@@ -58,6 +58,9 @@ public class User implements UserDetails {
 
     private String resetPasswordToken;
 
+    @Column(name = "locale")
+    private String locale;
+
     //User details methods
 
     @Override
