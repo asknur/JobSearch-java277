@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,5 +40,9 @@ public class ResumeDto {
     private LocalDateTime createdDate;
 
     private LocalDateTime updateTime;
+
+    private List<WorkExperienceInfoDto> workExperiences = new ArrayList<>();
+    private List<EducationInfoDto> educations = new ArrayList<>();
+    private List<ContactInfoDto> contacts = new ArrayList<>();
 
 }

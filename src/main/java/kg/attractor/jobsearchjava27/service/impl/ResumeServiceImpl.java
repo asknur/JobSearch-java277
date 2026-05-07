@@ -3,12 +3,8 @@ package kg.attractor.jobsearchjava27.service.impl;
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
 import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
-import kg.attractor.jobsearchjava27.model.Category;
-import kg.attractor.jobsearchjava27.model.Resume;
-import kg.attractor.jobsearchjava27.model.User;
-import kg.attractor.jobsearchjava27.repository.CategoryRepository;
-import kg.attractor.jobsearchjava27.repository.ResumeRepository;
-import kg.attractor.jobsearchjava27.repository.UserRepository;
+import kg.attractor.jobsearchjava27.model.*;
+import kg.attractor.jobsearchjava27.repository.*;
 import kg.attractor.jobsearchjava27.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +22,10 @@ public class ResumeServiceImpl implements ResumeService {
     private final CategoryRepository  categoryRepository;
     private final UserRepository userRepository;
     private final ResumeRepository resumeRepository;
+    private final WorkExperienceInfoRepository workExperienceInfoRepository;
+    private final EducationInfoRepository educationInfoRepository;
+    private final ContactInfoRepository contactInfoRepository;
+    private final ContactTypeRepository contactTypeRepository;
 
     @Override
     public void create(ResumeDto res, String applicantEmail) {
@@ -45,6 +45,48 @@ public class ResumeServiceImpl implements ResumeService {
                 .applicant(user)
                 .build();
         resumeRepository.save(resume);
+
+        if (res.getWorkExperiences() != null) {
+            res.getWorkExperiences().forEach(w -> {
+                if (w.getCompanyName() != null && !w.getCompanyName().isBlank()) {
+                    WorkExperienceInfo exp = new WorkExperienceInfo();
+                    exp.setCompanyName(w.getCompanyName().trim());
+                    exp.setPosition(w.getPosition());
+                    exp.setYears(w.getYears());
+                    exp.setResponsibilities(w.getResponsibilities());
+                    exp.setResume(resume);
+                    workExperienceInfoRepository.save(exp);
+                }
+            });
+        }
+
+        if (res.getEducations() != null) {
+            res.getEducations().forEach(e -> {
+                if (e.getInstitution() != null && !e.getInstitution().isBlank()) {
+                    EducationInfo edu = new EducationInfo();
+                    edu.setInstitution(e.getInstitution().trim());
+                    edu.setProgram(e.getProgram());
+                    edu.setStartDate(e.getStartDate());
+                    edu.setEndDate(e.getEndDate());
+                    edu.setDegree(e.getDegree());
+                    edu.setResume(resume);
+                    educationInfoRepository.save(edu);
+                }
+            });
+        }
+
+        // сохраняем контакты
+        if (res.getContacts() != null) {
+            res.getContacts().forEach(c -> {
+                if (c.getValue() != null && !c.getValue().isBlank()) {
+                    ContactInfo contact = new ContactInfo();
+                    contact.setValue(c.getValue().trim());
+                    contactTypeRepository.findById(c.getTypeId()).ifPresent(contact::setType);
+                    contact.setResume(resume);
+                    contactInfoRepository.save(contact);
+                }
+            });
+        }
     }
 
     @Override
