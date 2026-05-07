@@ -26,5 +26,5 @@ public class ContactInfoDto {
 
     @NotNull
     @Min(1)
-    private ContactType typeId;
+    private Long typeId;
 }
