@@ -15,23 +15,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class WorkExperienceInfoDto {
-    @NotBlank
+    @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 1, max = 100)
     private String responsibilities;
 
-    @NotBlank
+    @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 1, max = 100)
     private String position;
 
-    @NotBlank
+    @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 1, max = 100)
     private String companyName;
 
-    @NotNull
+    @NotNull(message = "{validation.name.notBlank}")
     @Min(1)
     private Integer years;
 
-    @NotNull
+    @NotNull(message = "{validation.name.notBlank}")
     @Min(1)
     private Resume resumeId;
 }

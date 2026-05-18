@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ContactTypeDto {
     @NotBlank
-    @Size(min = 1,  max = 20, message = "Should be type")
+    @Size(min = 1,  max = 20, message = "{validation.name.notBlank}")
     private String type;
 
     @NotNull

@@ -19,8 +19,6 @@ public interface VacancyService {
 
     List<VacancyDto> getAllVacancies();
 
-    List<VacancyDto> getRespondedVacancies(Long applicantId);
-
     List<VacancyDto> getVacanciesByCategoryId(Long id);
 
     List<User> getApplicantsByVacancyId(Long id);
@@ -34,4 +32,6 @@ public interface VacancyService {
     Page<VacancyDto> getVacanciesByAuthorPage(Long authorId, int page, int count);
 
     Page<VacancyDto> getRespondedVacanciesPage(Long applicantId, int page, int count);
+
+    Page<VacancyDto> getRespondedVacancies(int page, int size, String sort);
 }

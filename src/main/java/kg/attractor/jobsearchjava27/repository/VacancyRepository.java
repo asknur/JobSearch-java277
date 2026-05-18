@@ -29,6 +29,11 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
     @Query("SELECT ra.vacancy FROM RespondedApplicant ra WHERE ra.resume.applicant.id = :applicantId")
     List<Vacancy> findRespondedVacanciesByApplicantId(@Param("applicantId") Long applicantId);
 
+    @Query("SELECT v from Vacancy v WHERE v.isActive = true " +
+            "ORDER BY (SELECT COUNT(r) from RespondedApplicant r WHERE r.vacancy = v) DESC")
+    Page<Vacancy> findActiveOrderByRespondedCount(Pageable pageable);
+
+
 
     //pageable
 
@@ -38,5 +43,4 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
     @Query("SELECT ra.vacancy FROM RespondedApplicant ra WHERE ra.resume.applicant.id = :applicantId")
     Page<Vacancy> findRespondedVacanciesByApplicantId(@Param("applicantId") Long applicantId, Pageable pageable);
-
 }

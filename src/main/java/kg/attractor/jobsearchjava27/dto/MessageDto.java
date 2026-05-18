@@ -20,7 +20,7 @@ public class MessageDto {
     private Timestamp timestamp;
 
     @NotBlank
-    @Size(min = 1, max = 200, message = "Should be content")
+    @Size(min = 1, message = "{validation.name.notBlank}")
     private String content;
 
     @NotNull

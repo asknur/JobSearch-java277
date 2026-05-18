@@ -23,14 +23,14 @@ import java.util.List;
 public class ResumeDto {
     private Long id;
 
-    @NotBlank(message = "Name cant be empty")
+    @NotBlank(message = "{validation.name.notBlank}")
     private String name;
 
-    @NotNull(message = "Enter salary")
-    @Min(value = 0, message = "Salary cant be negative")
+    @NotNull(message = "{validation.name.notBlank}")
+    @Min(value = 0, message = "{validation.salary.min}")
     private Float salary;
 
-    @NotNull(message = "Enter category")
+    @NotNull(message = "{validation.name.notBlank}")
     private Long categoryId;
 
     private Long applicantId;

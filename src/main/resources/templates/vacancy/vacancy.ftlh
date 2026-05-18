@@ -6,6 +6,7 @@
         <select name="sort" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
             <option value="newest" <#if sort == "newest">selected</#if>><@spring.message 'vacancy.sort.newest'/></option>
             <option value="oldest" <#if sort == "oldest">selected</#if>><@spring.message 'vacancy.sort.oldest'/></option>
+            <option value="responded" <#if sort == "responded">selected</#if>><@spring.message 'vacancy.sort.responded'/></option>
         </select>
     </form>
     <div class="container mt-4">

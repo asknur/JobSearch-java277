@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ContactInfoDto {
     @NotBlank
-    @Size(min = 1, max = 20, message = "Should be value")
+    @Size(min = 1, max = 20, message = "{validation.name.notBlank}")
     private String value;
 
     @NotNull

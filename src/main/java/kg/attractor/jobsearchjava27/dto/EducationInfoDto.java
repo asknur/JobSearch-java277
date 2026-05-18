@@ -18,18 +18,18 @@ import java.time.LocalDate;
 @Builder
 public class EducationInfoDto {
     @NotBlank
-    @Size(min = 1, max = 100, message = "Should be degree")
+    @Size(min = 1, max = 100, message = "{validation.name.notBlank}")
     private String degree;
 
     private LocalDate startDate;
     private LocalDate endDate;
 
     @NotBlank
-    @Size(min = 1, max = 100, message = "Should be program")
+    @Size(min = 1, max = 100, message = "{validation.name.notBlank}")
     private String program;
 
     @NotBlank
-    @Size(min = 1, max = 100, message = "Should be institution")
+    @Size(min = 1, max = 100, message = "{validation.name.notBlank}")
     private String institution;
 
     @NotNull
