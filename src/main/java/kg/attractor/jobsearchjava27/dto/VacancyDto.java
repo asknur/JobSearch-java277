@@ -21,19 +21,19 @@ import java.time.LocalDateTime;
 public class VacancyDto {
     private Long id;
 
-    @NotBlank(message = "Name cant be empty")
+    @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 1, max = 100)
     private String name;
 
-    @NotBlank(message = "Description cant be empty")
+    @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 1, max = 255)
     private String description;
 
-    @NotNull(message = "Enter salary")
-    @Min(value = 0, message = "Salary cant be negative")
+    @NotNull(message = "{validation.name.notBlank}")
+    @Min(value = 0, message = "{validation.salary.min}")
     private Float salary;
 
-    @NotNull(message = "Enter category")
+    @NotNull(message = "{validation.categoryId.notNull}")
     private Long categoryId;
 
     private Long authorId;

@@ -98,14 +98,6 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<VacancyDto> getRespondedVacancies(Long id) {
-        return vacancyRepository.findRespondedVacanciesByApplicantId(id)
-                .stream()
-                .map(this::toDto)
-                .toList();
-    }
-
-    @Override
     public List<User> getApplicantsByVacancyId(Long id) {
         return respondedApplicantRepository.findApplicantsByVacancyId(id);
     }
@@ -161,6 +153,18 @@ public class VacancyServiceImpl implements VacancyService {
     public Page<VacancyDto> getRespondedVacanciesPage(Long applicantId, int page, int count) {
         Pageable pageable = PageRequest.of(page, count);
         return vacancyRepository.findRespondedVacanciesByApplicantId(applicantId, pageable).map(this::toDto);
+    }
+
+    @Override
+    public Page<VacancyDto> getRespondedVacancies(int page, int size, String sort) {
+        if ("responded".equals(sort)) {
+            Pageable pageable = PageRequest.of(page, size);
+            return vacancyRepository.findActiveOrderByRespondedCount(pageable).map(this::toDto);
+        }
+        Sort sorting = "oldest".equals(sort)
+                ? Sort.by(Sort.Order.asc("createdDate"))
+                : Sort.by(Sort.Order.desc("createdDate"));
+        return vacancyRepository.findByIsActiveTrue(PageRequest.of(page, size, sorting)).map(this::toDto);
     }
 
 

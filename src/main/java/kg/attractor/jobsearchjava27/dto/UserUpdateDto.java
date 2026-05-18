@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserUpdateDto {
 
-    @NotBlank(message = "Name cant be empty")
+    @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 2, max = 50)
     private String name;
 
-    @NotBlank(message = "Surname cant be empty")
+    @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 2, max = 50)
     private String surname;
 
-    @NotNull(message = "Age cant be empty")
-    @Min(value = 14, message = "Min age 14")
+    @NotNull(message = "{validation.name.notBlank}")
+    @Min(value = 14, message = "{validation.age.min}")
     @Max(value = 100)
     private Integer age;
 
