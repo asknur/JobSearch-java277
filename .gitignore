@@ -34,4 +34,4 @@ build/
 /data/
 /db/
 /logs/
-.env/
+.env
