@@ -2,7 +2,7 @@
 <#import "/spring.ftl" as spring>
 <@main.layout>
     <div class="container mt-4">
-        <h2 class="mb-4"><@spring.message 'resume.edit.title'/></h2>
+        <h2 class="mb-4"><@spring.message 'resume.create.title'/></h2>
         <div class="card p-4 shadow-sm">
             <form method="post" action="/resume/create">
                 <#if _csrf??>
@@ -43,65 +43,28 @@
                     </#if>
                 </div>
 
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" name="isActive" id="isActive" checked>
+                    <label class="form-check-label" for="isActive">
+                        <@spring.message 'resume.field.isActive'/>
+                    </label>
+                </div>
+
                 <hr>
                 <div class="mb-3">
                     <label class="form-label fw-bold"><@spring.message 'resume.work.title'/></label>
-                    <div id="work-experience-container">
-                        <div class="border rounded p-3 mb-2">
-                            <div class="mb-2">
-                                <label class="form-label"><@spring.message 'resume.work.companyName'/></label>
-                                <input type="text" name="workExperiences[0].companyName" class="form-control">
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label"><@spring.message 'resume.work.position'/></label>
-                                <input type="text" name="workExperiences[0].position" class="form-control">
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label"><@spring.message 'resume.work.years'/></label>
-                                <input type="number" name="workExperiences[0].years" class="form-control" min="0">
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label"><@spring.message 'resume.work.responsibilities'/></label>
-                                <textarea name="workExperiences[0].responsibilities" class="form-control" rows="2"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addWorkExperience()">
-                        <@spring.message 'resume.work.addButton'/>
+                    <div id="work-container"></div>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="addWork()">
+                         <@spring.message 'resume.work.addButton'/>
                     </button>
                 </div>
 
                 <hr>
                 <div class="mb-3">
                     <label class="form-label fw-bold"><@spring.message 'resume.education.title'/></label>
-                    <div id="education-container">
-                        <div class="border rounded p-3 mb-2">
-                            <div class="mb-2">
-                                <label class="form-label"><@spring.message 'resume.education.institution'/></label>
-                                <input type="text" name="educations[0].institution" class="form-control">
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label"><@spring.message 'resume.education.program'/></label>
-                                <input type="text" name="educations[0].program" class="form-control">
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <label class="form-label"><@spring.message 'resume.education.startDate'/></label>
-                                    <input type="date" name="educations[0].startDate" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label class="form-label"><@spring.message 'resume.education.endDate'/></label>
-                                    <input type="date" name="educations[0].endDate" class="form-control">
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label"><@spring.message 'resume.education.degree'/></label>
-                                <input type="text" name="educations[0].degree" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addEducation()">
-                        <@spring.message 'resume.education.addButton'/>
+                    <div id="edu-container"></div>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="addEdu()">
+                         <@spring.message 'resume.education.addButton'/>
                     </button>
                 </div>
 
@@ -127,13 +90,6 @@
                     </div>
                 </div>
 
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" name="isActive" id="isActive" checked>
-                    <label class="form-check-label" for="isActive">
-                        <@spring.message 'resume.field.isActive'/>
-                    </label>
-                </div>
-
                 <div class="d-flex gap-2 justify-content-end">
                     <a href="/profile" class="btn btn-outline-secondary">
                         <@spring.message 'common.cancel'/>
@@ -147,82 +103,65 @@
     </div>
 
     <script>
-        const i18n = {
-            companyName: '<@spring.message "resume.work.companyName"/>',
-            position: '<@spring.message "resume.work.position"/>',
-            years: '<@spring.message "resume.work.years"/>',
-            responsibilities: '<@spring.message "resume.work.responsibilities"/>',
-            deleteButton: '<@spring.message "resume.work.deleteButton"/>',
-            institution: '<@spring.message "resume.education.institution"/>',
-            program: '<@spring.message "resume.education.program"/>',
-            startDate: '<@spring.message "resume.education.startDate"/>',
-            endDate: '<@spring.message "resume.education.endDate"/>',
-            degree: '<@spring.message "resume.education.degree"/>'
-        };
+        let workCount = 0;
+        let eduCount = 0;
 
-        let workCount = 1;
-        let eduCount = 1;
-
-        function addWorkExperience() {
-            const container = document.getElementById('work-experience-container');
-            const block = document.createElement('div');
-            block.className = 'border rounded p-3 mb-2';
-            block.innerHTML = `
-                <div class="mb-2">
-                    <label class="form-label">${i18n.companyName}</label>
-                    <input type="text" name="workExperiences[${workCount}].companyName" class="form-control">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">${i18n.position}</label>
-                    <input type="text" name="workExperiences[${workCount}].position" class="form-control">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">${i18n.years}</label>
-                    <input type="number" name="workExperiences[${workCount}].years" class="form-control" min="0">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">${i18n.responsibilities}</label>
-                    <textarea name="workExperiences[${workCount}].responsibilities" class="form-control" rows="2"></textarea>
-                </div>
-                <button type="button" class="btn btn-outline-danger btn-sm mt-1"
-                        onclick="this.parentElement.remove()">${i18n.deleteButton}</button>
-            `;
-            container.appendChild(block);
-            workCount++;
+        function addWork() {
+            const container = document.getElementById('work-container');
+            const i = workCount++;
+            const div = document.createElement('div');
+            div.className = 'border rounded p-3 mb-2';
+            div.innerHTML =
+                '<div class="mb-2">' +
+                '<label class="form-label">Название компании</label>' +
+                '<input type="text" name="workExperiences[' + i + '].companyName" class="form-control">' +
+                '</div>' +
+                '<div class="mb-2">' +
+                '<label class="form-label">Должность</label>' +
+                '<input type="text" name="workExperiences[' + i + '].position" class="form-control">' +
+                '</div>' +
+                '<div class="mb-2">' +
+                '<label class="form-label">Лет опыта</label>' +
+                '<input type="number" name="workExperiences[' + i + '].years" class="form-control" min="0">' +
+                '</div>' +
+                '<div class="mb-2">' +
+                '<label class="form-label">Обязанности</label>' +
+                '<textarea name="workExperiences[' + i + '].responsibilities" class="form-control" rows="2"></textarea>' +
+                '</div>' +
+                '<button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="this.closest(\'.border\').remove()">Удалить</button>';
+            container.appendChild(div);
         }
 
-        function addEducation() {
-            const container = document.getElementById('education-container');
-            const block = document.createElement('div');
-            block.className = 'border rounded p-3 mb-2';
-            block.innerHTML = `
-                <div class="mb-2">
-                    <label class="form-label">${i18n.institution}</label>
-                    <input type="text" name="educations[${eduCount}].institution" class="form-control">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">${i18n.program}</label>
-                    <input type="text" name="educations[${eduCount}].program" class="form-control">
-                </div>
-                <div class="row mb-2">
-                    <div class="col">
-                        <label class="form-label">${i18n.startDate}</label>
-                        <input type="date" name="educations[${eduCount}].startDate" class="form-control">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">${i18n.endDate}</label>
-                        <input type="date" name="educations[${eduCount}].endDate" class="form-control">
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">${i18n.degree}</label>
-                    <input type="text" name="educations[${eduCount}].degree" class="form-control">
-                </div>
-                <button type="button" class="btn btn-outline-danger btn-sm mt-1"
-                        onclick="this.parentElement.remove()">${i18n.deleteButton}</button>
-            `;
-            container.appendChild(block);
-            eduCount++;
+        function addEdu() {
+            const container = document.getElementById('edu-container');
+            const i = eduCount++;
+            const div = document.createElement('div');
+            div.className = 'border rounded p-3 mb-2';
+            div.innerHTML =
+                '<div class="mb-2">' +
+                '<label class="form-label">Учебное заведение</label>' +
+                '<input type="text" name="educations[' + i + '].institution" class="form-control">' +
+                '</div>' +
+                '<div class="mb-2">' +
+                '<label class="form-label">Программа</label>' +
+                '<input type="text" name="educations[' + i + '].program" class="form-control">' +
+                '</div>' +
+                '<div class="row mb-2">' +
+                '<div class="col">' +
+                '<label class="form-label">Дата начала</label>' +
+                '<input type="date" name="educations[' + i + '].startDate" class="form-control">' +
+                '</div>' +
+                '<div class="col">' +
+                '<label class="form-label">Дата окончания</label>' +
+                '<input type="date" name="educations[' + i + '].endDate" class="form-control">' +
+                '</div>' +
+                '</div>' +
+                '<div class="mb-2">' +
+                '<label class="form-label">Степень</label>' +
+                '<input type="text" name="educations[' + i + '].degree" class="form-control">' +
+                '</div>' +
+                '<button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="this.closest(\'.border\').remove()">Удалить</button>';
+            container.appendChild(div);
         }
     </script>
-</@main.layout>
+</@main.layout>о
