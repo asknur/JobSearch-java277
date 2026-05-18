@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/auth/login", "/auth/register", "/auth/forgot_password", "/auth/reset_password").permitAll()
+                        .requestMatchers("/", "/vacancy","/auth/login", "/auth/register", "/auth/forgot_password", "/auth/reset_password").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
