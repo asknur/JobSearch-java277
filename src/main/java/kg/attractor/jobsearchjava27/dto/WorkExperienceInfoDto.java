@@ -17,21 +17,16 @@ import lombok.NoArgsConstructor;
 public class WorkExperienceInfoDto {
     @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 1, max = 100)
-    private String responsibilities;
+    private String companyName;
 
     @NotBlank(message = "{validation.name.notBlank}")
     @Size(min = 1, max = 100)
     private String position;
 
-    @NotBlank(message = "{validation.name.notBlank}")
-    @Size(min = 1, max = 100)
-    private String companyName;
-
     @NotNull(message = "{validation.name.notBlank}")
-    @Min(1)
+    @Min(value = 0, message = "{validation.work.years.min}")
     private Integer years;
 
-    @NotNull(message = "{validation.name.notBlank}")
-    @Min(1)
-    private Resume resumeId;
+    private String responsibilities;
+
 }
