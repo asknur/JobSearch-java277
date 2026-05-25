@@ -1,12 +1,18 @@
 <#import '/spring.ftl' as spring>
 <#import "../layout.ftlh" as main>
 <@main.layout>
+    <script src="/static/js/vacancy.js"></script>
     <form method="get" action="/vacancy" class="d-flex gap-2 align-items-center mb-3">
         <input type="hidden" name="page" value="0">
-        <select name="sort" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
-            <option value="newest" <#if sort == "newest">selected</#if>><@spring.message 'vacancy.sort.newest'/></option>
-            <option value="oldest" <#if sort == "oldest">selected</#if>><@spring.message 'vacancy.sort.oldest'/></option>
-            <option value="responded" <#if sort == "responded">selected</#if>><@spring.message 'vacancy.sort.responded'/></option>
+        <select id="filterSort" class="form-select form-select-sm w-auto" onchange="applyFilter()">
+            <option value="newest"
+                    <#if sort == "newest">selected</#if>><@spring.message 'vacancy.sort.newest'/></option>
+            <option value="oldest"
+                    <#if sort == "oldest">selected</#if>><@spring.message 'vacancy.sort.oldest'/></option>
+            <option value="responded_desc"
+                    <#if sort == "responded_desc">selected</#if>><@spring.message 'vacancy.sort.responded.desc'/></option>
+            <option value="responded_asc"
+                    <#if sort == "responded_asc">selected</#if>><@spring.message 'vacancy.sort.responded.asc'/></option>
         </select>
     </form>
     <div class="container mt-4">

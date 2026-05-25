@@ -136,11 +136,15 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public Page<VacancyDto> getActiveVacanciesPage(int page, int count, String sort) {
-        Sort sorting = "oldest".equals(sort)
-                ? Sort.by(Sort.Order.asc("createdDate"))
-                : Sort.by(Sort.Order.desc("createdDate"));
-        Pageable pageable = PageRequest.of(page, count, sorting);
-        return vacancyRepository.findByIsActiveTrue(pageable).map(this::toDto);
+        Pageable pageable = PageRequest.of(page, count);
+        return switch (sort) {
+            case "oldest" -> vacancyRepository.findByIsActiveTrue(
+                    PageRequest.of(page, count, Sort.by(Sort.Order.asc("createdDate")))).map(this::toDto);
+            case "responded_asc" -> vacancyRepository.findActiveOrderByRespondedCountAsc(pageable).map(this::toDto);
+            case "responded_desc" -> vacancyRepository.findActiveOrderByRespondedCountDesc(pageable).map(this::toDto);
+            default -> vacancyRepository.findByIsActiveTrue(
+                    PageRequest.of(page, count, Sort.by(Sort.Order.desc("createdDate")))).map(this::toDto);
+        };
     }
 
     @Override
@@ -159,14 +163,13 @@ public class VacancyServiceImpl implements VacancyService {
     public Page<VacancyDto> getRespondedVacancies(int page, int size, String sort) {
         if ("responded".equals(sort)) {
             Pageable pageable = PageRequest.of(page, size);
-            return vacancyRepository.findActiveOrderByRespondedCount(pageable).map(this::toDto);
+            return vacancyRepository.findActiveOrderByRespondedCountDesc(pageable).map(this::toDto);
         }
         Sort sorting = "oldest".equals(sort)
                 ? Sort.by(Sort.Order.asc("createdDate"))
                 : Sort.by(Sort.Order.desc("createdDate"));
         return vacancyRepository.findByIsActiveTrue(PageRequest.of(page, size, sorting)).map(this::toDto);
     }
-
 
 
 }

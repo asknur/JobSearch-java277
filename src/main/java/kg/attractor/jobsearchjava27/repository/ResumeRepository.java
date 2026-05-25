@@ -26,7 +26,6 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
 
     List<Resume> findByApplicantAndIsActiveTrue(User applicant);
 
-
     //pageable
 
     Page<Resume> findByIsActiveTrue(Pageable pageable);

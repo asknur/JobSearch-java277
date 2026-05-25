@@ -1,6 +1,8 @@
 package kg.attractor.jobsearchjava27.service.impl;
 
+import kg.attractor.jobsearchjava27.dto.EducationInfoDto;
 import kg.attractor.jobsearchjava27.dto.ResumeDto;
+import kg.attractor.jobsearchjava27.dto.WorkExperienceInfoDto;
 import kg.attractor.jobsearchjava27.exception.ResumeNotFoundException;
 import kg.attractor.jobsearchjava27.exception.UserNotFoundException;
 import kg.attractor.jobsearchjava27.model.*;
@@ -12,14 +14,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
-    private final CategoryRepository  categoryRepository;
+    private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final ResumeRepository resumeRepository;
     private final WorkExperienceInfoRepository workExperienceInfoRepository;
@@ -75,7 +79,6 @@ public class ResumeServiceImpl implements ResumeService {
             });
         }
 
-        // сохраняем контакты
         if (res.getContacts() != null) {
             res.getContacts().forEach(c -> {
                 if (c.getValue() != null && !c.getValue().isBlank()) {
@@ -90,6 +93,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    @Transactional
     public ResumeDto update(ResumeDto res) throws ResumeNotFoundException {
         Resume resume = resumeRepository.findById(res.getId())
                 .orElseThrow(ResumeNotFoundException::new);
@@ -102,8 +106,39 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setIsActive(res.getIsActive());
         resume.setCategory(category);
         resume.setUpdateTime(LocalDateTime.now());
-
         resumeRepository.save(resume);
+
+        workExperienceInfoRepository.deleteByResume(resume);
+        if (res.getWorkExperiences() != null) {
+            res.getWorkExperiences().forEach(w -> {
+                if (w.getCompanyName() != null && !w.getCompanyName().isBlank()) {
+                    WorkExperienceInfo exp = new WorkExperienceInfo();
+                    exp.setCompanyName(w.getCompanyName().trim());
+                    exp.setPosition(w.getPosition());
+                    exp.setYears(w.getYears());
+                    exp.setResponsibilities(w.getResponsibilities());
+                    exp.setResume(resume);
+                    workExperienceInfoRepository.save(exp);
+                }
+            });
+        }
+
+        educationInfoRepository.deleteByResume(resume);
+        if (res.getEducations() != null) {
+            res.getEducations().forEach(e -> {
+                if (e.getInstitution() != null && !e.getInstitution().isBlank()) {
+                    EducationInfo edu = new EducationInfo();
+                    edu.setInstitution(e.getInstitution().trim());
+                    edu.setProgram(e.getProgram());
+                    edu.setStartDate(e.getStartDate());
+                    edu.setEndDate(e.getEndDate());
+                    edu.setDegree(e.getDegree());
+                    edu.setResume(resume);
+                    educationInfoRepository.save(edu);
+                }
+            });
+        }
+
         return res;
     }
 
@@ -118,7 +153,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public ResumeDto findById(Long id) throws ResumeNotFoundException{
+    public ResumeDto findById(Long id) throws ResumeNotFoundException {
         Resume resume = resumeRepository.findById(id)
                 .orElseThrow(ResumeNotFoundException::new);
         return toDto(resume);
@@ -138,7 +173,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> getAllActiveResume(){
+    public List<ResumeDto> getAllActiveResume() {
         return resumeRepository.findByIsActiveTrue()
                 .stream()
                 .map(this::toDto)
@@ -146,7 +181,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> getResumeByCategoryId(Long id) throws ResumeNotFoundException{
+    public List<ResumeDto> getResumeByCategoryId(Long id) throws ResumeNotFoundException {
         return resumeRepository.findByCategoryId(id)
                 .stream()
                 .map(this::toDto)
@@ -171,6 +206,27 @@ public class ResumeServiceImpl implements ResumeService {
                 .updateTime(r.getUpdateTime())
                 .categoryId(r.getCategory().getId())
                 .applicantId(r.getApplicant().getId())
+                .workExperiences(r.getWorkExperienceInfo() != null
+                        ? r.getWorkExperienceInfo().stream()
+                        .map(w -> WorkExperienceInfoDto.builder()
+                                .companyName(w.getCompanyName())
+                                .position(w.getPosition())
+                                .years(w.getYears())
+                                .responsibilities(w.getResponsibilities())
+                                .build())
+                        .toList()
+                        : new ArrayList<>())
+                .educations(r.getEducations() != null
+                        ? r.getEducations().stream()
+                        .map(e -> EducationInfoDto.builder()
+                                .institution(e.getInstitution())
+                                .program(e.getProgram())
+                                .startDate(e.getStartDate())
+                                .endDate(e.getEndDate())
+                                .degree(e.getDegree())
+                                .build())
+                        .toList()
+                        : new ArrayList<>())
                 .build();
     }
 

@@ -17,22 +17,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class EducationInfoDto {
-    @NotBlank
-    @Size(min = 1, max = 100, message = "{validation.name.notBlank}")
-    private String degree;
+    @NotBlank(message = "{validation.education.institution}")
+    @Size(min = 1, max = 100)
+    private String institution;
+
+    @NotBlank(message = "{validation.name.notBlank}")
+    @Size(min = 1, max = 100)
+    private String program;
 
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @NotBlank
-    @Size(min = 1, max = 100, message = "{validation.name.notBlank}")
-    private String program;
-
-    @NotBlank
-    @Size(min = 1, max = 100, message = "{validation.name.notBlank}")
-    private String institution;
-
-    @NotNull
-    @Min(1)
-    private Resume resumeId;
+    @NotBlank(message = "{validation.name.notBlank}")
+    @Size(min = 1, max = 100)
+    private String degree;
 }

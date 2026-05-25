@@ -1,5 +1,6 @@
 package kg.attractor.jobsearchjava27.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +42,10 @@ public class ResumeDto {
 
     private LocalDateTime updateTime;
 
+    @Valid
     private List<WorkExperienceInfoDto> workExperiences = new ArrayList<>();
+
+    @Valid
     private List<EducationInfoDto> educations = new ArrayList<>();
     private List<ContactInfoDto> contacts = new ArrayList<>();
 

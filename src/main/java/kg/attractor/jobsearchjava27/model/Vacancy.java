@@ -45,7 +45,7 @@ public class Vacancy {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;      // ← было categoryId
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
