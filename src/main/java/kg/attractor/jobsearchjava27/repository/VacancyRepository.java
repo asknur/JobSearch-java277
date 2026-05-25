@@ -31,9 +31,11 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
     @Query("SELECT v from Vacancy v WHERE v.isActive = true " +
             "ORDER BY (SELECT COUNT(r) from RespondedApplicant r WHERE r.vacancy = v) DESC")
-    Page<Vacancy> findActiveOrderByRespondedCount(Pageable pageable);
+    Page<Vacancy> findActiveOrderByRespondedCountDesc(Pageable pageable);
 
-
+    @Query("SELECT v FROM Vacancy v WHERE v.isActive = true ORDER BY " +
+            "(SELECT COUNT(ra) FROM RespondedApplicant ra WHERE ra.vacancy = v) ASC")
+    Page<Vacancy> findActiveOrderByRespondedCountAsc(Pageable pageable);
 
     //pageable
 
