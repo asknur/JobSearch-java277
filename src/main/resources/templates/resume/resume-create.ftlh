@@ -53,6 +53,26 @@
                 <hr>
                 <div class="mb-3">
                     <label class="form-label fw-bold"><@spring.message 'resume.work.title'/></label>
+                    <#list resumeDto.workExperiences as w>
+                        <div class="border rounded p-3 mb-2">
+                            <div class="mb-2">
+                                <label class="form-label"><@spring.message 'resume.work.companyName'/></label>
+                                <input type="text" name="workExperiences[${w?index}].companyName" class="form-control" value="${w.companyName!}">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label"><@spring.message 'resume.work.position'/></label>
+                                <input type="text" name="workExperiences[${w?index}].position" class="form-control" value="${w.position!}">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label"><@spring.message 'resume.work.years'/></label>
+                                <input type="number" name="workExperiences[${w?index}].years" class="form-control" value="${w.years!}" min="0">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label"><@spring.message 'resume.work.responsibilities'/></label>
+                                <textarea name="workExperiences[${w?index}].responsibilities" class="form-control" rows="2">${w.responsibilities!}</textarea>
+                            </div>
+                        </div>
+                    </#list>
                     <div id="work-container"></div>
                     <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="addWork()">
                          <@spring.message 'resume.work.addButton'/>
@@ -62,6 +82,32 @@
                 <hr>
                 <div class="mb-3">
                     <label class="form-label fw-bold"><@spring.message 'resume.education.title'/></label>
+                    <#list resumeDto.educations as e>
+                        <div class="border rounded p-3 mb-2">
+                            <div class="mb-2">
+                                <label class="form-label"><@spring.message 'resume.education.institution'/></label>
+                                <input type="text" name="educations[${e?index}].institution" class="form-control" value="${e.institution!}">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label"><@spring.message 'resume.education.program'/></label>
+                                <input type="text" name="educations[${e?index}].program" class="form-control" value="${e.program!}">
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <label class="form-label"><@spring.message 'resume.education.startDate'/></label>
+                                    <input type="date" name="educations[${e?index}].startDate" class="form-control" value="${e.startDate!}">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label"><@spring.message 'resume.education.endDate'/></label>
+                                    <input type="date" name="educations[${e?index}].endDate" class="form-control" value="${e.endDate!}">
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label"><@spring.message 'resume.education.degree'/></label>
+                                <input type="text" name="educations[${e?index}].degree" class="form-control" value="${e.degree!}">
+                            </div>
+                        </div>
+                    </#list>
                     <div id="edu-container"></div>
                     <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="addEdu()">
                          <@spring.message 'resume.education.addButton'/>
@@ -103,8 +149,8 @@
     </div>
 
     <script>
-        let workCount = 0;
-        let eduCount = 0;
+        let workCount = ${(resumeDto.workExperiences?size)!0};
+        let eduCount = ${(resumeDto.educations?size)!0};
 
         function addWork() {
             const container = document.getElementById('work-container');
@@ -113,19 +159,19 @@
             div.className = 'border rounded p-3 mb-2';
             div.innerHTML =
                 '<div class="mb-2">' +
-                '<label class="form-label">Название компании</label>' +
+                '<label class="form-label"><@spring.message 'resume.work.companyName'/></label>' +
                 '<input type="text" name="workExperiences[' + i + '].companyName" class="form-control">' +
                 '</div>' +
                 '<div class="mb-2">' +
-                '<label class="form-label">Должность</label>' +
+                '<label class="form-label"><@spring.message 'resume.work.position'/></label>' +
                 '<input type="text" name="workExperiences[' + i + '].position" class="form-control">' +
                 '</div>' +
                 '<div class="mb-2">' +
-                '<label class="form-label">Лет опыта</label>' +
+                '<label class="form-label"><@spring.message 'resume.work.years'/></label>' +
                 '<input type="number" name="workExperiences[' + i + '].years" class="form-control" min="0">' +
                 '</div>' +
                 '<div class="mb-2">' +
-                '<label class="form-label">Обязанности</label>' +
+                '<label class="form-label"><@spring.message 'resume.work.responsibilities'/></label>' +
                 '<textarea name="workExperiences[' + i + '].responsibilities" class="form-control" rows="2"></textarea>' +
                 '</div>' +
                 '<button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="this.closest(\'.border\').remove()">Удалить</button>';
@@ -139,25 +185,25 @@
             div.className = 'border rounded p-3 mb-2';
             div.innerHTML =
                 '<div class="mb-2">' +
-                '<label class="form-label">Учебное заведение</label>' +
+                '<label class="form-label"><@spring.message 'resume.education.institution'/></label>' +
                 '<input type="text" name="educations[' + i + '].institution" class="form-control">' +
                 '</div>' +
                 '<div class="mb-2">' +
-                '<label class="form-label">Программа</label>' +
+                '<label class="form-label"><@spring.message 'resume.education.program'/></label>' +
                 '<input type="text" name="educations[' + i + '].program" class="form-control">' +
                 '</div>' +
                 '<div class="row mb-2">' +
                 '<div class="col">' +
-                '<label class="form-label">Дата начала</label>' +
+                '<label class="form-label"><@spring.message 'resume.education.startDate'/></label>' +
                 '<input type="date" name="educations[' + i + '].startDate" class="form-control">' +
                 '</div>' +
                 '<div class="col">' +
-                '<label class="form-label">Дата окончания</label>' +
+                '<label class="form-label"><@spring.message 'resume.education.endDate'/></label>' +
                 '<input type="date" name="educations[' + i + '].endDate" class="form-control">' +
                 '</div>' +
                 '</div>' +
                 '<div class="mb-2">' +
-                '<label class="form-label">Степень</label>' +
+                '<label class="form-label"><@spring.message 'resume.education.degree'/></label>' +
                 '<input type="text" name="educations[' + i + '].degree" class="form-control">' +
                 '</div>' +
                 '<button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="this.closest(\'.border\').remove()">Удалить</button>';
