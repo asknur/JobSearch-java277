@@ -44,4 +44,6 @@ public interface UserService {
     void updatePassword(User user, String newPassword);
 
     void makeResetPasswdLink(HttpServletRequest request) throws UsernameNotFoundException, UnsupportedEncodingException, MessagingException;
+
+    String resetToken(String email);
 }
