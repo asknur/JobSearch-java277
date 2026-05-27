@@ -64,13 +64,13 @@ public class AuthController {
 
     @PostMapping("/forgot_password")
     public String processForgotPassword(HttpServletRequest request, Model model) {
+        String email = request.getParameter("email");
         try {
-            userService.makeResetPasswdLink(request);
+            String token = userService.resetToken(email);
+            model.addAttribute("token", token);
             model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
-        } catch (UsernameNotFoundException | UnsupportedEncodingException ex) {
+        } catch (UsernameNotFoundException ex) {
             model.addAttribute("error", ex.getMessage());
-        } catch (MessagingException ex) {
-            model.addAttribute("error", "Error while sending email");
         }
         return "auth/forgot_password_form";
     }
