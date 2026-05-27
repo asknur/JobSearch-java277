@@ -223,4 +223,11 @@ public class UserServiceImpl implements UserService {
         emailService.sendEmail(email, resetPasswordLink);
     }
 
+    @Override
+    public String resetToken(String email) {
+        String token = UUID.randomUUID().toString();
+        updateResetPasswordToken(token, email);
+        return token;
+    }
+
 }
