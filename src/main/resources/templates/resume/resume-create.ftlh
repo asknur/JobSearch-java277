@@ -58,14 +58,23 @@
                             <div class="mb-2">
                                 <label class="form-label"><@spring.message 'resume.work.companyName'/></label>
                                 <input type="text" name="workExperiences[${w?index}].companyName" class="form-control" value="${w.companyName!}">
+                                <#if errors?? && errors.hasFieldErrors("workExperiences[${w?index}].companyName")>
+                                    <div class="text-danger">${errors.getFieldError("workExperiences[${w?index}].companyName").defaultMessage}</div>
+                                </#if>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label"><@spring.message 'resume.work.position'/></label>
                                 <input type="text" name="workExperiences[${w?index}].position" class="form-control" value="${w.position!}">
+                                <#if errors?? && errors.hasFieldErrors("workExperiences[${w?index}].position")>
+                                    <div class="text-danger">${errors.getFieldError("workExperiences[${w?index}].position").defaultMessage}</div>
+                                </#if>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label"><@spring.message 'resume.work.years'/></label>
                                 <input type="number" name="workExperiences[${w?index}].years" class="form-control" value="${w.years!}" min="0">
+                                <#if errors?? && errors.hasFieldErrors("workExperiences[${w?index}].years")>
+                                    <div class="text-danger">${errors.getFieldError("workExperiences[${w?index}].years").defaultMessage}</div>
+                                </#if>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label"><@spring.message 'resume.work.responsibilities'/></label>
@@ -87,10 +96,16 @@
                             <div class="mb-2">
                                 <label class="form-label"><@spring.message 'resume.education.institution'/></label>
                                 <input type="text" name="educations[${e?index}].institution" class="form-control" value="${e.institution!}">
+                                <#if errors?? && errors.hasFieldErrors("educations[${e?index}].institution")>
+                                    <div class="text-danger">${errors.getFieldError("educations[${e?index}].institution").defaultMessage}</div>
+                                </#if>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label"><@spring.message 'resume.education.program'/></label>
                                 <input type="text" name="educations[${e?index}].program" class="form-control" value="${e.program!}">
+                                <#if errors?? && errors.hasFieldErrors("educations[${e?index}].program")>
+                                    <div class="text-danger">${errors.getFieldError("educations[${e?index}].program").defaultMessage}</div>
+                                </#if>
                             </div>
                             <div class="row mb-2">
                                 <div class="col">
@@ -105,6 +120,9 @@
                             <div class="mb-2">
                                 <label class="form-label"><@spring.message 'resume.education.degree'/></label>
                                 <input type="text" name="educations[${e?index}].degree" class="form-control" value="${e.degree!}">
+                                <#if errors?? && errors.hasFieldErrors("educations[${e?index}].degree")>
+                                    <div class="text-danger">${errors.getFieldError("educations[${e?index}].degree").defaultMessage}</div>
+                                </#if>
                             </div>
                         </div>
                     </#list>
@@ -210,4 +228,4 @@
             container.appendChild(div);
         }
     </script>
-</@main.layout>о
+</@main.layout>
